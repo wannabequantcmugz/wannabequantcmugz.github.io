@@ -1,68 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Axiom Capital Research</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
             margin: 0;
-            padding: 0;
-            background-color: #0a0a0a;
-            color: #f0f0f0;
-            text-align: center;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             padding: 2rem;
+            line-height: 1.6;
         }
+        
         .container {
             max-width: 800px;
-            border-left: 1px solid #333;
-            padding-left: 2rem;
-            text-align: left;
+            margin: 0 auto;
+            padding: 2rem;
         }
+        
         h1 {
-            font-size: 3rem;
+            color: #74c0fc;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            color: #ffffff;
-            font-weight: 300;
-            letter-spacing: -0.5px;
         }
+        
         .tagline {
-            font-size: 1.2rem;
             color: #aaa;
-            margin-bottom: 3rem;
-            font-weight: 300;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
         }
+        
         .divider {
             height: 1px;
-            width: 100%;
-            background: linear-gradient(90deg, transparent, #333, transparent);
-            margin: 2.5rem 0;
+            background: linear-gradient(90deg, transparent, #444, transparent);
+            margin: 2rem 0;
         }
+        
         .link {
             display: block;
-            color: #4dabf7;
-            font-size: 1.3rem;
-            margin: 1.5rem 0;
+            margin: 1rem 0;
+            padding: 1.2rem;
+            background: rgba(116, 192, 252, 0.1);
+            border-radius: 10px;
             text-decoration: none;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #222;
-            transition: color 0.2s, border-color 0.2s;
-        }
-        .link:hover {
             color: #74c0fc;
-            border-color: #444;
+            transition: all 0.3s;
+            border: 1px solid rgba(116, 192, 252, 0.2);
+            font-size: 1.1rem;
         }
+        
+        .link:hover {
+            background: rgba(116, 192, 252, 0.2);
+            transform: translateX(8px);
+            border-color: #74c0fc;
+            box-shadow: 0 5px 15px rgba(116, 192, 252, 0.1);
+        }
+        
+        .file-size {
+            font-size: 0.9rem;
+            color: #999;
+            margin-left: 0.5rem;
+            font-style: italic;
+            display: block;
+            margin-top: 0.3rem;
+        }
+        
         .footer {
             margin-top: 4rem;
             font-size: 0.9rem;
             color: #666;
+            text-align: center;
+        }
+        
+        /* ADD THESE NEW STYLES */
+        a[href="/progress.html"] {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: #e0e0e0;
+            text-decoration: none;
+            border: 1px solid #444;
+            transition: all 0.3s;
+        }
+        
+        a[href="/progress.html"]:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #74c0fc;
         }
     </style>
 </head>
@@ -73,9 +98,14 @@
         
         <div class="divider"></div>
         
-        <a href="#" class="link">Axiom Adaptive Multi-Factor Model — Investment Memorandum (Q1 2026)</a>
-        <a href="#" class="link">Live Research Dashboard — Portfolio Analytics & Backtest Engine (Coming Soon)</a>
-<a href="/progress.html">View Initial Backtest Results & Research Progress</a>
+        <!-- FIXED: Correct filename spelling -->
+        <a href="Axiom_QPAM_Memorandum_v1_1.pdf" class="link" target="_blank">
+            📄 Axiom Adaptive Multi-Factor Model — Investment Memorandum (Q1 2026)
+            <span class="file-size">Download PDF (437 KB)</span>
+        </a>
+        
+        <a href="#" class="link">📊 Live Research Dashboard — Portfolio Analytics & Backtest Engine (Coming Soon)</a>
+        <a href="/progress.html">🔍 View Initial Backtest Results & Research Progress</a>
         
         <div class="divider"></div>
         
