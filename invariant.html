@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invariant — Decision-Dependence Memory</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+            background: radial-gradient(ellipse at top, #0f172a 0%, #020617 60%);
+            color: #e5e7eb;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            color: #e5e7eb;
+        }
+
+        h2 {
+            margin-top: 64px;
+            font-size: 1.6rem;
+            color: #93c5fd;
+        }
+
+        h3 {
+            margin-top: 32px;
+            font-size: 1.2rem;
+            color: #bfdbfe;
+        }
+
+        p {
+            margin: 16px 0;
+            color: #d1d5db;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #9ca3af;
+            max-width: 760px;
+        }
+
+        .callout {
+            margin: 40px 0;
+            padding: 20px 24px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 10px;
+            font-size: 1.05rem;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #c7d2fe;
+        }
+
+        .table {
+            margin-top: 24px;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .table th, .table td {
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background: rgba(30, 41, 59, 0.6);
+            color: #e5e7eb;
+        }
+
+        .muted {
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            margin-top: 120px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Invariant</h1>
+    <p class="subtitle">
+        A decision-dependence memory system for capital allocation.
+    </p>
+
+    <div class="callout quote">
+        Invariant does not record what people say they believed.<br>
+        It records what their capital repeatedly depended on — and shows how exposed they are if that dependence fails.
+    </div>
+
+    <p class="muted">
+        Invariant does not predict what will happen. It shows what would matter if something did.
+    </p>
+
+    <h2>What Invariant Is</h2>
+    <p>
+        Investment organisations repeatedly face a hard question:
+    </p>
+
+    <div class="callout">
+        <strong>What assumption are we most exposed to right now?</strong>
+    </div>
+
+    <p>
+        This question is rarely answered structurally. Most teams rely on narrative,
+        recollection, or committee consensus. That fails because belief does not
+        crystallise at a single moment — it hardens through reuse.
+    </p>
+
+    <p>
+        Invariant is built on a single primitive:
+        <strong>dependence under reuse, elevated only by counterfactual consequence.</strong>
+    </p>
+
+    <h2>What Invariant Is Not</h2>
+    <p>
+        Invariant is not a trading system, an approval workflow, compliance tooling,
+        explainability software, or decision rationale capture.
+    </p>
+
+    <p>
+        It does not optimise strategies or recommend actions.
+        It is an evidence layer, not a governance layer.
+    </p>
+
+    <h2>The Primitive (Locked)</h2>
+    <p>
+        An artefact becomes load-bearing only when:
+    </p>
+    <ul>
+        <li>It persists under reuse</li>
+        <li>Removing or substituting it causes material consequences</li>
+    </ul>
+
+    <p>
+        Artefacts that persist without being tested are explicitly labelled:
+        <strong>persistent but untested</strong>.
+        This is not failure — it is information about current exposure.
+    </p>
+
+    <h2>Example: Single Concrete Exposure Replay</h2>
+    <p class="muted">
+        Fictional but mechanically realistic.
+    </p>
+
+    <h3>Observed Reliance Accrual</h3>
+    <ul>
+        <li>Dataset A reused across six signals</li>
+        <li>Static liquidity cost model used everywhere</li>
+        <li>Signal decay parameter fixed early and never revisited</li>
+    </ul>
+
+    <h3>Probe Coverage State</h3>
+    <table class="table">
+        <tr>
+            <th>Component</th>
+            <th>Probe</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>Dataset A</td>
+            <td>Removal / substitution</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td>Cost Model</td>
+            <td>Alternative cost simulation</td>
+            <td>Partial</td>
+        </tr>
+        <tr>
+            <td>Decay parameter</td>
+            <td>Retuning sensitivity</td>
+            <td>Partial</td>
+        </tr>
+    </table>
+
+    <h3>Exposure Statement</h3>
+    <div class="callout">
+        Current exposure relies most heavily on Dataset A.<br>
+        That dependence has never been tested under removal or substitution.<br>
+        If invalidated, approximately 40% of factor exposure is affected simultaneously.
+    </div>
+
+    <h2>Why This Exists</h2>
+    <p>
+        Invariant survives success, politics, and time because it does not ask for virtue,
+        acknowledgement, or confession.
+    </p>
+
+    <p>
+        It allows people to do what they always do — reuse what works — and then
+        faithfully records the consequences of that behaviour.
+    </p>
+
+    <footer>
+        Axiom Capital Research — Independent student research initiative.<br>
+        No capital is managed.
+    </footer>
+
+</div>
+
+</body>
+</html>
