@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invariant — Decision-Dependence Memory for Capital Allocation</title>
+<title>Invariant — The Evidence Layer for Capital Allocation</title>
 <meta name="description" content="Invariant records what capital repeatedly depended on — and shows how exposed you are if that dependence fails.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,23 +12,20 @@
 
 :root {
   --ink: #0d0d0d;
-  --ink-mid: #2e2e2e;
   --ink-muted: #5a5a5a;
   --ink-faint: #a8a8a8;
   --paper: #f7f5f0;
   --paper-warm: #edeae3;
   --paper-card: #ffffff;
   --rule: rgba(0,0,0,0.09);
-  --rule-strong: rgba(0,0,0,0.18);
+  --rule-strong: rgba(0,0,0,0.16);
   --accent: #c8410a;
-  --accent-green: #0d6e5a;
-  --accent-amber: #8a5200;
   --serif: 'DM Serif Display', Georgia, serif;
   --sans: 'Instrument Sans', system-ui, sans-serif;
   --mono: 'DM Mono', monospace;
 }
 
-html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
 body { font-family: var(--sans); background: var(--paper); color: var(--ink); overflow-x: hidden; }
 
 /* ── NAV ── */
@@ -40,592 +37,507 @@ nav {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--rule);
 }
+.nav-left { display: flex; flex-direction: column; gap: 1px; }
 .nav-logo { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
-.nav-sub  { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.06em; margin-top: 2px; }
-.nav-dots { display: flex; gap: 7px; align-items: center; }
-.dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--rule-strong); border: none; cursor: pointer; padding: 0;
-  transition: background 0.25s, transform 0.2s;
+.nav-sub  { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.06em; }
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-muted); text-decoration: none; transition: color 0.2s;
 }
-.dot:hover { transform: scale(1.4); }
-.dot.active { background: var(--ink); }
-.nav-right { display: flex; align-items: center; gap: 24px; }
+.nav-link:hover { color: var(--ink); }
 .nav-cta {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--ink); background: var(--ink); color: var(--paper);
-  padding: 8px 16px; text-decoration: none; border-radius: 2px;
-  transition: opacity 0.2s;
+  color: var(--paper); background: var(--ink); padding: 8px 16px;
+  text-decoration: none; border-radius: 2px; transition: opacity 0.2s;
 }
 .nav-cta:hover { opacity: 0.8; }
 
-/* ── PROGRESS ── */
-.progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); transition: width 0.4s ease; z-index: 200; }
+/* ── SECTIONS ── */
+section { padding: 100px 44px 80px; }
+.inner { max-width: 960px; margin: 0 auto; width: 100%; }
 
-/* ── SLIDES ── */
-.slide {
-  min-height: 100vh; scroll-snap-align: start;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 100px 44px 64px; position: relative;
+/* ── HERO ── */
+#hero {
+  min-height: 100vh; display: flex; align-items: center;
+  background: var(--ink); padding-top: 120px;
 }
-.slide-inner { max-width: 920px; margin: 0 auto; width: 100%; }
-
-/* ── LABELS ── */
-.slide-label {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--ink-faint); margin-bottom: 36px;
+#hero .inner { display: flex; flex-direction: column; justify-content: center; }
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 24px;
   display: flex; align-items: center; gap: 14px;
 }
-.slide-label::after { content: ''; display: inline-block; width: 36px; height: 1px; background: currentColor; }
-
-/* ── TYPE ── */
-h1 { font-family: var(--serif); font-size: clamp(46px, 7.5vw, 94px); line-height: 0.97; letter-spacing: -0.025em; margin-bottom: 28px; }
-h2 { font-family: var(--serif); font-size: clamp(34px, 5.5vw, 62px); line-height: 1.04; letter-spacing: -0.02em; margin-bottom: 20px; }
-.lead { font-size: clamp(15px, 2vw, 18px); line-height: 1.7; color: var(--ink-muted); max-width: 600px; }
-.lead strong { color: var(--ink); font-weight: 500; }
-.mono-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-faint); }
-
-hr.rule { border: none; border-top: 1px solid var(--rule); margin: 36px 0; }
-
-/* ── SLIDE BACKGROUNDS ── */
-#s1 { background: var(--ink); }
-#s1 h1, #s1 .slide-label, #s1 .lead, #s1 .mono-tag { color: var(--paper); }
-#s1 .slide-label { color: rgba(255,255,255,0.25); }
-#s1 .lead { color: rgba(255,255,255,0.55); }
-#s1 hr.rule { border-color: rgba(255,255,255,0.1); }
-#s1 .slide-footer { color: rgba(255,255,255,0.18); }
-#s3 { background: var(--paper-warm); }
-#s5 { background: var(--paper-warm); }
-
-/* ── COVER ── */
-.cover-eyebrow {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); margin-bottom: 20px;
+.hero-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: currentColor; }
+#hero h1 {
+  font-family: var(--serif); font-size: clamp(48px, 8vw, 100px);
+  line-height: 0.97; letter-spacing: -0.025em; color: var(--paper);
+  margin-bottom: 32px;
+}
+#hero .lead {
+  font-size: clamp(15px, 1.8vw, 18px); line-height: 1.7;
+  color: rgba(255,255,255,0.55); max-width: 580px; margin-bottom: 48px;
+}
+#hero .lead strong { color: var(--paper); font-weight: 500; }
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink); background: var(--paper); padding: 13px 24px;
+  text-decoration: none; border-radius: 2px; transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-ghost {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-ghost:hover { color: var(--paper); border-color: rgba(255,255,255,0.5); }
+.hero-scroll {
+  margin-top: 80px; font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.2);
   display: flex; align-items: center; gap: 12px;
 }
-.cover-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: currentColor; }
+.hero-scroll::after { content: ''; display: inline-block; width: 40px; height: 1px; background: currentColor; }
 
-/* ── PRIMITIVE BLOCK ── */
-.primitive {
-  border: 1px solid var(--rule-strong);
-  border-radius: 4px;
-  padding: 28px 32px;
-  background: var(--paper-card);
-  margin-top: 36px;
-  max-width: 680px;
+/* ── SECTION LABELS ── */
+.section-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); margin-bottom: 40px;
+  display: flex; align-items: center; gap: 14px;
+}
+.section-label::after { content: ''; display: inline-block; width: 36px; height: 1px; background: currentColor; }
+
+h2 {
+  font-family: var(--serif); font-size: clamp(32px, 5vw, 58px);
+  line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 20px;
+}
+.lead {
+  font-size: clamp(15px, 1.8vw, 17px); line-height: 1.7;
+  color: var(--ink-muted); max-width: 600px;
+}
+.lead strong { color: var(--ink); font-weight: 500; }
+hr.rule { border: none; border-top: 1px solid var(--rule); margin: 40px 0; }
+
+/* ── PRIMITIVE ── */
+#primitive { background: var(--paper-warm); }
+.primitive-box {
+  border: 1px solid var(--rule-strong); border-radius: 4px;
+  background: var(--paper-card); padding: 32px 36px; margin-top: 40px; max-width: 700px;
 }
 .primitive-label {
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--ink-faint); margin-bottom: 16px;
 }
-.primitive p {
-  font-size: 15px; line-height: 1.7; color: var(--ink-muted);
-}
-.primitive p strong { color: var(--ink); font-weight: 500; }
-.primitive-conditions {
-  margin-top: 16px; padding-top: 16px;
-  border-top: 1px solid var(--rule);
-  display: flex; flex-direction: column; gap: 10px;
-}
-.cond {
-  display: grid; grid-template-columns: 18px 1fr; gap: 12px; align-items: start;
-  font-size: 14px; color: var(--ink-muted); line-height: 1.5;
-}
+.primitive-box p { font-size: 15px; line-height: 1.7; color: var(--ink-muted); }
+.primitive-box p strong { color: var(--ink); font-weight: 500; }
+.primitive-conditions { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 12px; }
+.cond { display: grid; grid-template-columns: 16px 1fr; gap: 14px; font-size: 14px; color: var(--ink-muted); line-height: 1.55; }
 .cond::before { content: '→'; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 1px; }
 .cond strong { color: var(--ink); font-weight: 500; }
 
-/* ── PROBLEM LIST ── */
-.problem-list { list-style: none; margin-top: 32px; }
-.problem-list li {
-  font-size: clamp(15px, 1.8vw, 17px); line-height: 1.6; color: var(--ink-muted);
-  padding: 16px 0; border-bottom: 1px solid var(--rule);
-  display: grid; grid-template-columns: 20px 1fr; gap: 16px; align-items: start;
-}
-.problem-list li::before { content: '—'; font-family: var(--mono); font-size: 13px; color: var(--ink-faint); margin-top: 1px; }
-.problem-list li strong { color: var(--ink); font-weight: 500; }
+/* ── DEMO SECTION ── */
+#demo { background: var(--ink); }
+#demo .section-label { color: rgba(255,255,255,0.25); }
+#demo h2 { color: var(--paper); }
+#demo .lead { color: rgba(255,255,255,0.55); }
+#demo .lead strong { color: var(--paper); }
+#demo hr.rule { border-color: rgba(255,255,255,0.1); }
 
-/* ── PROBE TABLE ── */
-.probe-wrap {
-  margin-top: 36px;
-  border: 1px solid var(--rule-strong);
-  border-radius: 4px; overflow: hidden;
-  max-width: 720px;
-  background: var(--paper-card);
+.demo-card {
+  margin-top: 40px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px; overflow: hidden;
 }
-.probe-header {
-  background: var(--ink); padding: 12px 20px;
+.demo-card-header {
+  background: rgba(255,255,255,0.05);
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.demo-card-header span {
+  font-family: var(--mono); font-size: 11px;
+  color: rgba(255,255,255,0.4); letter-spacing: 0.06em;
+}
+.demo-card-header .demo-live {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 10px; color: #2ecc71; letter-spacing: 0.08em;
+}
+.demo-live::before {
+  content: ''; display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; background: #2ecc71;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.demo-preview {
+  padding: 28px 28px 20px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.demo-bundle-row {
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: grid; grid-template-columns: 160px 1fr; gap: 12px; font-size: 12px;
+}
+.demo-bundle-row:last-child { border-bottom: none; }
+.dbr-key { font-family: var(--mono); color: rgba(255,255,255,0.3); font-size: 11px; }
+.dbr-val { color: rgba(255,255,255,0.75); line-height: 1.5; }
+.pill {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  padding: 2px 8px; border-radius: 2px; margin-right: 4px; letter-spacing: 0.04em;
+}
+.pill-red    { background: rgba(231,76,60,0.2);  color: #e74c3c; }
+.pill-amber  { background: rgba(243,156,18,0.2); color: #f39c12; }
+.pill-green  { background: rgba(46,204,113,0.2); color: #2ecc71; }
+.pill-blue   { background: rgba(52,152,219,0.2); color: #5dade2; }
+
+.demo-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.demo-table th {
+  font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.25);
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left;
+}
+.demo-table td { padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); }
+.demo-table td:first-child { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.85); }
+
+.demo-footer {
+  padding: 16px 28px;
+  border-top: 1px solid rgba(255,255,255,0.06);
   display: flex; align-items: center; justify-content: space-between;
 }
-.probe-header span { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.06em; }
-.probe-header .probe-id { color: rgba(255,255,255,0.9); }
-table.probe {
-  width: 100%; border-collapse: collapse; font-size: 13px;
-}
-table.probe thead tr { background: var(--paper-warm); }
-table.probe th {
-  padding: 10px 16px; text-align: left;
-  font-family: var(--mono); font-size: 10px; font-weight: 500;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
-  border-bottom: 1px solid var(--rule-strong);
-}
-table.probe td { padding: 12px 16px; border-bottom: 1px solid var(--rule); color: var(--ink-muted); vertical-align: top; }
-table.probe tr:last-child td { border-bottom: none; }
-table.probe td:first-child { font-family: var(--mono); font-size: 12px; color: var(--ink); }
-.status {
-  display: inline-block; font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.06em; padding: 3px 9px; border-radius: 2px;
-}
-.s-none    { background: #fdecea; color: #9a2318; }
-.s-partial { background: #fef4e6; color: #8a4800; }
-.s-tested  { background: #e6f4ee; color: #0d6e5a; }
-.s-hardened { background: #0d0d0d; color: #f7f5f0; }
-.s-drifting { background: #fef4e6; color: #8a4800; }
-.s-untested { background: #f0f0f0; color: #5a5a5a; }
+.demo-footer-note { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.06em; }
 
-/* EXPOSURE STATEMENT */
-.exposure {
-  margin-top: 20px; padding: 20px 20px 20px 20px;
-  border-left: 3px solid var(--accent);
-  background: var(--paper-card);
-  max-width: 720px;
+.demo-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink); background: var(--paper); padding: 10px 20px;
+  text-decoration: none; border-radius: 2px; transition: opacity 0.2s;
 }
-.exposure-label {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 10px;
+.demo-cta:hover { opacity: 0.85; }
+.demo-cta-arrow { font-size: 14px; }
+
+/* ── RESOURCES ── */
+#resources { background: var(--paper); }
+.resource-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--rule-strong);
+  border: 1px solid var(--rule-strong); border-radius: 4px;
+  overflow: hidden; margin-top: 40px;
 }
-.exposure p { font-size: 14px; line-height: 1.65; color: var(--ink-muted); }
-.exposure p strong { color: var(--ink); font-weight: 500; }
-
-/* ── STAT ROW ── */
-.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 40px; }
-.stat { padding: 22px 0; border-top: 2px solid var(--ink); }
-.stat-num { font-family: var(--serif); font-size: 52px; line-height: 1; color: var(--ink); margin-bottom: 6px; }
-.stat-label { font-size: 13px; color: var(--ink-muted); line-height: 1.4; }
-
-/* ── TWO COL ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 36px; align-items: start; }
-
-/* ── BUYER ── */
-.buyer-block { margin-top: 20px; }
-.buyer-row { padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.buyer-row:first-child { border-top: 1px solid var(--rule); }
-.buyer-who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; }
-.buyer-row p { font-size: 14px; line-height: 1.55; color: var(--ink-muted); }
-.buyer-row p strong { color: var(--ink); font-weight: 500; }
-
-/* ── TRACTION ── */
-.traction-item {
-  padding: 18px 0; border-bottom: 1px solid var(--rule);
-  display: grid; grid-template-columns: 28px 1fr; gap: 16px; align-items: start;
+.resource-card {
+  background: var(--paper-card); padding: 32px 28px 36px;
+  text-decoration: none; display: block;
+  transition: background 0.2s;
 }
-.traction-item:first-child { border-top: 1px solid var(--rule); margin-top: 36px; }
-.t-n { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); padding-top: 2px; }
-.traction-item p { font-size: 14px; line-height: 1.6; color: var(--ink-muted); }
-.traction-item p strong { color: var(--ink); font-weight: 500; }
-
-/* ── ASK / STEPS ── */
-.step-list { margin-top: 32px; }
-.step-item {
-  display: grid; grid-template-columns: 90px 1fr; gap: 24px;
-  padding: 18px 0; border-bottom: 1px solid var(--rule); align-items: start;
+.resource-card:hover { background: var(--paper-warm); }
+.resource-n { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); margin-bottom: 20px; }
+.resource-icon {
+  width: 36px; height: 36px; border-radius: 2px;
+  background: var(--ink); display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
 }
-.step-item:first-child { border-top: 1px solid var(--rule); }
-.step-q { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); padding-top: 2px; }
-.step-item h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
-.step-item p { font-size: 13px; color: var(--ink-muted); line-height: 1.55; }
-
-/* ── PULLQUOTE ── */
-.pullquote { border-left: 3px solid var(--ink); padding-left: 24px; margin: 36px 0; }
-.pullquote p { font-family: var(--serif); font-size: clamp(20px, 3vw, 30px); line-height: 1.3; font-style: italic; color: var(--ink); }
+.resource-icon svg { width: 18px; height: 18px; fill: none; stroke: var(--paper); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.resource-card h3 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.resource-card p { font-size: 13px; line-height: 1.6; color: var(--ink-muted); margin-bottom: 20px; }
+.resource-link {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-faint); display: flex; align-items: center; gap: 8px;
+}
+.resource-link::after { content: '→'; }
 
 /* ── CONSTITUTION ── */
-.const-list { margin-top: 32px; }
+#constitution { background: var(--paper-warm); }
+.const-list { margin-top: 36px; }
 .const-item {
-  display: grid; grid-template-columns: 24px 1fr; gap: 18px;
-  padding: 16px 0; border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 28px 1fr; gap: 20px;
+  padding: 18px 0; border-bottom: 1px solid var(--rule);
 }
 .const-item:first-child { border-top: 1px solid var(--rule); }
 .const-n { font-family: var(--serif); font-size: 20px; font-style: italic; color: var(--ink-faint); line-height: 1.4; }
-.const-item p { font-size: 14px; line-height: 1.6; color: var(--ink-muted); }
+.const-item p { font-size: 14px; line-height: 1.65; color: var(--ink-muted); }
 .const-item p strong { color: var(--ink); font-weight: 500; }
 
-/* ── CARD GRID ── */
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1px; background: var(--rule-strong); border: 1px solid var(--rule-strong); border-radius: 4px; overflow: hidden; margin-top: 36px; }
-.card { background: var(--paper-card); padding: 24px 24px 28px; }
-.card-n { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); margin-bottom: 14px; }
-.card h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 7px; }
-.card p { font-size: 13px; line-height: 1.6; color: var(--ink-muted); }
+/* ── CONTACT ── */
+#contact { background: var(--ink); }
+#contact .section-label { color: rgba(255,255,255,0.25); }
+#contact h2 { color: var(--paper); }
+#contact .lead { color: rgba(255,255,255,0.5); }
+#contact .lead strong { color: var(--paper); }
+.contact-row {
+  margin-top: 48px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+}
 
 /* ── FOOTER ── */
-.slide-footer {
-  position: absolute; bottom: 24px; left: 44px; right: 44px;
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.06em;
+footer {
+  background: var(--ink); border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 24px 44px;
+  display: flex; align-items: center; justify-content: space-between;
 }
+.footer-left { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
+.footer-right { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
 
-/* ── CTA BUTTON ── */
-.cta-btn {
-  display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--paper); background: var(--ink);
-  padding: 13px 24px; text-decoration: none; border-radius: 2px;
-  transition: opacity 0.2s;
-}
-.cta-btn:hover { opacity: 0.8; }
-.cta-ghost {
-  display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--ink);
-  padding: 13px 0; text-decoration: none; border-bottom: 1px solid var(--rule-strong);
-}
-
-@media (max-width: 680px) {
-  .two-col, .stat-row { grid-template-columns: 1fr; }
+@media (max-width: 720px) {
   nav { padding: 14px 20px; }
-  .slide { padding: 90px 20px 56px; }
-  .slide-footer { left: 20px; right: 20px; }
+  .nav-links { display: none; }
+  section { padding: 80px 20px 60px; }
+  .demo-preview { grid-template-columns: 1fr; }
+  .resource-grid { grid-template-columns: 1fr; }
+  footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
 }
 </style>
 </head>
 <body>
 
-<div class="progress" id="progress"></div>
-
 <nav>
-  <div>
-    <div class="nav-logo">Invariant</div>
-    <div class="nav-sub">Axiom Capital Research</div>
+  <div class="nav-left">
+    <span class="nav-logo">Invariant</span>
+    <span class="nav-sub">Axiom Capital Research</span>
   </div>
-  <div class="nav-dots" id="nav-dots">
-    <button class="dot active" onclick="goSlide(0)"></button>
-    <button class="dot" onclick="goSlide(1)"></button>
-    <button class="dot" onclick="goSlide(2)"></button>
-    <button class="dot" onclick="goSlide(3)"></button>
-    <button class="dot" onclick="goSlide(4)"></button>
-    <button class="dot" onclick="goSlide(5)"></button>
-    <button class="dot" onclick="goSlide(6)"></button>
+  <div class="nav-links">
+    <a class="nav-link" href="#primitive">The Primitive</a>
+    <a class="nav-link" href="#demo">Demo</a>
+    <a class="nav-link" href="#resources">Resources</a>
+    <a class="nav-link" href="#constitution">Research Constitution</a>
   </div>
   <a class="nav-cta" href="mailto:contact@axiomcapitalresearch.com">Request Access</a>
 </nav>
 
 
-<!-- ══ SLIDE 1: COVER ══ -->
-<section class="slide" id="s1">
-  <div class="slide-inner">
-    <div class="cover-eyebrow">Decision-Dependence Memory · Pre-Seed</div>
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="inner">
+    <div class="hero-eyebrow">Decision-Dependence Memory · Pre-Seed</div>
     <h1>What did this<br>decision actually<br>depend on?</h1>
-    <hr class="rule">
     <p class="lead">
       Invariant does not record what people say they believed.<br>
       It records what their capital <strong>repeatedly depended on</strong> — and shows how exposed they are if that dependence fails.
     </p>
-  </div>
-  <div class="slide-footer">
-    <span>INVARIANT · CONFIDENTIAL · PRE-SEED</span>
-    <span>axiomcapitalresearch.com</span>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://nbviewer.org/github/wannabequantcmugz/Invariant/blob/main/demo/invariant_demo.ipynb" target="_blank">View Live Demo</a>
+      <a class="btn-ghost" href="invariant-deck-v2.html">Read the Deck →</a>
+      <a class="btn-ghost" href="https://github.com/wannabequantcmugz/Invariant" target="_blank">GitHub →</a>
+    </div>
+    <div class="hero-scroll">Scroll to explore</div>
   </div>
 </section>
 
 
-<!-- ══ SLIDE 2: THE PROBLEM ══ -->
-<section class="slide" id="s2">
-  <div class="slide-inner">
-    <div class="slide-label">02 — The Problem</div>
-    <h2>Belief does not crystallise<br>at a single moment.</h2>
-    <p class="lead">It hardens through reuse. By the time capital is meaningfully at risk, no one can trace how it got there.</p>
-    <ul class="problem-list">
-      <li><strong>Signals are reused without documentation.</strong> Assumptions harden into defaults. No one records that this happened.</li>
-      <li><strong>Post-mortems are reconstructed, not recalled.</strong> "We always knew" is indistinguishable from luck. So is success.</li>
-      <li><strong>LP scrutiny is increasing.</strong> Disputed PnL drivers take weeks to resolve. Explanations drift across quarters.</li>
-      <li><strong>ML accelerates self-deception as much as insight.</strong> The more complex the model stack, the harder the causal audit.</li>
-      <li><strong>Traditional controls rely on narrative.</strong> Self-reported belief. Single approval moments. Free-form text. None of this is evidence.</li>
-    </ul>
-  </div>
-  <div class="slide-footer"><span>INVARIANT</span><span>02</span></div>
-</section>
-
-
-<!-- ══ SLIDE 3: THE PRIMITIVE ══ -->
-<section class="slide" id="s3">
-  <div class="slide-inner">
-    <div class="slide-label">03 — The Primitive</div>
+<!-- ══ THE PRIMITIVE ══ -->
+<section id="primitive">
+  <div class="inner">
+    <div class="section-label">The Primitive</div>
     <h2>Dependence under reuse,<br>elevated by counterfactual<br>consequence.</h2>
-    <p class="lead">Invariant is built on one locked primitive. Everything else follows from it.</p>
+    <p class="lead">Invariant is built on one locked concept. Everything else follows from it.</p>
 
-    <div class="primitive">
+    <div class="primitive-box">
       <div class="primitive-label">The Load-Bearing Artefact</div>
-      <p>An artefact becomes <strong>load-bearing</strong> only when two conditions are met simultaneously:</p>
+      <p>An artefact becomes <strong>load-bearing</strong> when two conditions are met simultaneously:</p>
       <div class="primitive-conditions">
         <div class="cond"><strong>It persists under reuse.</strong> The same dataset, signal, or parameter is relied upon repeatedly — not just once.</div>
-        <div class="cond"><strong>Removing it causes material consequences.</strong> If it were invalidated or substituted, a meaningful portion of exposure would be affected.</div>
+        <div class="cond"><strong>Removing it causes material consequences.</strong> If invalidated or substituted, a meaningful portion of exposure is affected.</div>
       </div>
-      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);">
-        <p>Artefacts that persist <em>without</em> being tested are explicitly labelled: <strong>persistent but untested.</strong> This is not failure — it is information about current exposure.</p>
-      </div>
-    </div>
-
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-n">01</div>
-        <h4>Reliance ledger</h4>
-        <p>Passively records which components decisions actually used — not what was later claimed in a narrative.</p>
-      </div>
-      <div class="card">
-        <div class="card-n">02</div>
-        <h4>Probe coverage map</h4>
-        <p>Shows which load-bearing artefacts have been tested under removal, substitution, or retuning — and which have not.</p>
-      </div>
-      <div class="card">
-        <div class="card-n">03</div>
-        <h4>Evidence replay</h4>
-        <p>Any past decision can be reproduced exactly as it existed — not as it is remembered under scrutiny or success.</p>
+      <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--rule);">
+        <p>Artefacts that persist <em>without</em> being tested are labelled: <strong>persistent but untested.</strong> This is not failure — it is information about current exposure.</p>
       </div>
     </div>
   </div>
-  <div class="slide-footer"><span>INVARIANT</span><span>03</span></div>
 </section>
 
 
-<!-- ══ SLIDE 4: PRODUCT — PROBE COVERAGE ══ -->
-<section class="slide" id="s4">
-  <div class="slide-inner">
-    <div class="slide-label">04 — Product</div>
+<!-- ══ DEMO ══ -->
+<section id="demo">
+  <div class="inner">
+    <div class="section-label">Working Demo</div>
     <h2>Exposure replay.<br>Not retrospective audit.</h2>
-    <p class="lead">One concrete output. Produced automatically when capital exposure changes. Answers the question no post-mortem can.</p>
+    <p class="lead">When capital exposure changes, Invariant produces one object automatically. <strong>The Evidence Bundle.</strong> A reproducible record of what that decision depended on — replayable under scrutiny.</p>
+    <hr class="rule">
 
-    <div class="probe-wrap">
-      <div class="probe-header">
-        <span class="probe-id">EXPOSURE REPLAY · MOMENTUM_FACTOR_DESK · 2024-11-14</span>
-        <span>LOCKED</span>
+    <div class="demo-card">
+      <div class="demo-card-header">
+        <span>EVIDENCE BUNDLE · MOMENTUM_FACTOR_DESK · 2024-11-14</span>
+        <span class="demo-live">LIVE DEMO</span>
       </div>
-      <div style="padding:16px 20px 4px;background:var(--paper-warm);">
-        <div style="font-family:var(--mono);font-size:11px;color:var(--ink-muted);margin-bottom:4px;">Observed reliance accrual</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-          <li style="font-size:13px;color:var(--ink-muted);display:grid;grid-template-columns:16px 1fr;gap:10px;align-items:start;"><span style="font-family:var(--mono);color:var(--ink-faint)">→</span>Dataset A reused across six independent signals</li>
-          <li style="font-size:13px;color:var(--ink-muted);display:grid;grid-template-columns:16px 1fr;gap:10px;align-items:start;"><span style="font-family:var(--mono);color:var(--ink-faint)">→</span>Static liquidity cost model applied in every sizing step</li>
-          <li style="font-size:13px;color:var(--ink-muted);display:grid;grid-template-columns:16px 1fr;gap:10px;align-items:start;"><span style="font-family:var(--mono);color:var(--ink-faint)">→</span>Signal decay parameter fixed at inception — never revisited</li>
-        </ul>
-      </div>
-      <table class="probe">
-        <thead>
-          <tr>
-            <th>Component</th>
-            <th>Probe type</th>
-            <th>Coverage</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Dataset A</td>
-            <td>Removal / substitution</td>
-            <td>None</td>
-            <td><span class="status s-none">UNTESTED</span></td>
-          </tr>
-          <tr>
-            <td>Liquidity cost model</td>
-            <td>Alternative cost simulation</td>
-            <td>1 of 3 regimes</td>
-            <td><span class="status s-partial">PARTIAL</span></td>
-          </tr>
-          <tr>
-            <td>Decay parameter</td>
-            <td>Retuning sensitivity</td>
-            <td>±20% range only</td>
-            <td><span class="status s-partial">PARTIAL</span></td>
-          </tr>
-          <tr>
-            <td>Vol regime filter</td>
-            <td>Regime switching test</td>
-            <td>Full coverage</td>
-            <td><span class="status s-tested">TESTED</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <div class="exposure">
-      <div class="exposure-label">Exposure Statement</div>
-      <p>Current exposure relies most heavily on <strong>Dataset A</strong>. That dependence has never been tested under removal or substitution. If invalidated, approximately <strong>40% of factor exposure is affected simultaneously.</strong> This is not a recommendation — it is a record of what is load-bearing and what is not.</p>
-    </div>
-
-    <p class="mono-tag" style="margin-top:16px;">No forms. No confessions. No acknowledgements. Just: what this depended on.</p>
-  </div>
-  <div class="slide-footer"><span>INVARIANT</span><span>04</span></div>
-</section>
-
-
-<!-- ══ SLIDE 5: WHY NOW + MARKET ══ -->
-<section class="slide" id="s5">
-  <div class="slide-inner">
-    <div class="slide-label">05 — Market & Timing</div>
-    <h2>Outcomes move faster<br>than explanations.</h2>
-
-    <div class="two-col">
-      <div>
-        <p class="lead" style="font-size:15px;">The forces creating this gap are structural — and widening.</p>
-        <ul class="problem-list" style="margin-top:20px;">
-          <li>LP due diligence is intensifying post-2022. Reproducible explanations are no longer optional.</li>
-          <li>ML is now standard at quant and multi-strat desks. Model provenance is almost never tracked.</li>
-          <li>UK and EU regulatory pressure on algorithmic decision-making is growing.</li>
-          <li>No current product reconstructs causal reliance at decision-time. GRC is retrospective. Audit is narrative. Invariant is neither.</li>
-        </ul>
-      </div>
-      <div>
-        <p class="lead" style="font-size:15px;margin-bottom:20px;">The buyer is specific.</p>
-        <div class="buyer-block">
-          <div class="buyer-row">
-            <div class="buyer-who">Primary</div>
-            <p><strong>CIOs and Heads of Risk</strong> at quant desks and multi-strat funds (AUM £500m–£10bn). They own the scrutiny problem and the LP relationship.</p>
+      <div class="demo-preview">
+        <!-- Left: bundle rows -->
+        <div>
+          <div class="demo-bundle-row">
+            <span class="dbr-key">snapshot_hash</span>
+            <span class="dbr-val" style="font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.35)">sha256:7f4a3b9e…c2d1</span>
           </div>
-          <div class="buyer-row">
-            <div class="buyer-who">Champion</div>
-            <p><strong>Quant researchers and model risk leads</strong> who live inside the causal chains. They understand the pain without explanation.</p>
+          <div class="demo-bundle-row">
+            <span class="dbr-key">dependency_graph</span>
+            <span class="dbr-val">crude_price_feed → momentum_signal → position_sizer → desk_exposure</span>
           </div>
-          <div class="buyer-row">
-            <div class="buyer-who">Economic buyer</div>
-            <p><strong>COO or CFO</strong> where LP relationships are at risk. Invariant is auditable infrastructure — not a product line.</p>
+          <div class="demo-bundle-row">
+            <span class="dbr-key">reliance_weights</span>
+            <span class="dbr-val">
+              <span class="pill pill-red">price_feed 0.43</span>
+              <span class="pill pill-amber">momentum 0.28</span>
+              <span class="pill pill-blue">vol_filter 0.10</span>
+            </span>
+          </div>
+          <div class="demo-bundle-row">
+            <span class="dbr-key">stability</span>
+            <span class="dbr-val">
+              <span class="pill pill-red">price_feed UNTESTED</span>
+              <span class="pill pill-amber">momentum PARTIAL</span>
+            </span>
+          </div>
+          <div class="demo-bundle-row">
+            <span class="dbr-key">counterfactual_Δ</span>
+            <span class="dbr-val">Remove price_feed → confidence 84% → 38% &nbsp;<span style="color:#e74c3c;font-family:var(--mono);font-size:11px">CRITICAL</span></span>
+          </div>
+        </div>
+
+        <!-- Right: probe coverage table -->
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:12px;">Probe Coverage</div>
+          <table class="demo-table">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Probe</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>crude_price_feed</td>
+                <td style="color:rgba(255,255,255,0.4);font-size:11px;">Removal test</td>
+                <td><span class="pill pill-red">UNTESTED</span></td>
+              </tr>
+              <tr>
+                <td>liquidity_model</td>
+                <td style="color:rgba(255,255,255,0.4);font-size:11px;">Alt simulation</td>
+                <td><span class="pill pill-amber">PARTIAL</span></td>
+              </tr>
+              <tr>
+                <td>decay_parameter</td>
+                <td style="color:rgba(255,255,255,0.4);font-size:11px;">Retuning</td>
+                <td><span class="pill pill-amber">PARTIAL</span></td>
+              </tr>
+              <tr>
+                <td>vol_regime_filter</td>
+                <td style="color:rgba(255,255,255,0.4);font-size:11px;">Regime switch</td>
+                <td><span class="pill pill-green">TESTED</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:14px;padding:12px 14px;border-left:2px solid #e74c3c;background:rgba(231,76,60,0.06);">
+            <div style="font-family:var(--mono);font-size:10px;color:#e74c3c;letter-spacing:0.08em;margin-bottom:6px;">EXPOSURE STATEMENT</div>
+            <p style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.5);">crude_price_feed drives 43% of this decision. It has never been tested under removal. If invalidated, ~40% of factor exposure is affected simultaneously.</p>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="stat-row">
-      <div class="stat">
-        <div class="stat-num">£4.2bn</div>
-        <div class="stat-label">UK hedge fund<br>addressable base (AUM)</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">~£80k</div>
-        <div class="stat-label">Target ACV,<br>enterprise SaaS model</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">0</div>
-        <div class="stat-label">Direct competitors solving<br>this specific problem</div>
+      <div class="demo-footer">
+        <span class="demo-footer-note">No forms. No confessions. No acknowledgements. Just: what this depended on.</span>
+        <a class="demo-cta" href="https://nbviewer.org/github/wannabequantcmugz/Invariant/blob/main/demo/invariant_demo.ipynb" target="_blank">
+          Run the demo <span class="demo-cta-arrow">→</span>
+        </a>
       </div>
     </div>
-  </div>
-  <div class="slide-footer"><span>INVARIANT</span><span>05</span></div>
-</section>
-
-
-<!-- ══ SLIDE 6: TRACTION ══ -->
-<section class="slide" id="s6">
-  <div class="slide-inner">
-    <div class="slide-label">06 — Early Signal</div>
-    <h2>Pre-revenue.<br>The wedge is testable.</h2>
-    <p class="lead">Invariant does not need to be right about trades. It needs to be right about <strong>what trades depended on.</strong> That is a smaller, auditable claim — which makes proof-of-value fast to demonstrate.</p>
-
-    <div class="traction-item">
-      <span class="t-n">01</span>
-      <p><strong>The primitive survives scrutiny.</strong> The "load-bearing artefact" framing maps directly to how quant practitioners describe their own model risk. No translation required.</p>
-    </div>
-    <div class="traction-item">
-      <span class="t-n">02</span>
-      <p><strong>Zero direct competition identified.</strong> Compliance tools are retrospective. Audit workflows are narrative. Model risk platforms don't track dependence under reuse. The gap is real and unoccupied.</p>
-    </div>
-    <div class="traction-item">
-      <span class="t-n">03</span>
-      <p><strong>"Persistent but untested" is a new category.</strong> Naming the thing that existing systems don't track — artefacts that persist without being probed — is a concept no current vendor has surfaced.</p>
-    </div>
-    <div class="traction-item">
-      <span class="t-n">04</span>
-      <p><strong>Infrastructure positioning removes the primary objection.</strong> Invariant runs entirely inside client infrastructure. No data leaves. No retention policy imposed. This answers the first question any regulated fund asks.</p>
-    </div>
-    <div class="traction-item">
-      <span class="t-n">05</span>
-      <p><strong>Founder-led sales path is clear.</strong> Target: 3–5 design partners at UK quant desks. 60-day pilots. Proof-of-value metrics agreed upfront. First live exposure replay is the product milestone that unlocks the next round.</p>
-    </div>
-  </div>
-  <div class="slide-footer"><span>INVARIANT</span><span>06</span></div>
-</section>
-
-
-<!-- ══ SLIDE 7: THE ASK ══ -->
-<section class="slide" id="s7">
-  <div class="slide-inner">
-    <div class="slide-label">07 — The Ask</div>
-    <h2>Pre-seed.<br>£150k–£250k.</h2>
-
-    <div class="pullquote">
-      <p>"What assumption are we most exposed to right now?"</p>
-    </div>
-
-    <p class="lead">That question is rarely answered structurally. Invariant exists to make answering it a procedure — not a post-mortem.</p>
-
-    <div class="step-list">
-      <div class="step-item">
-        <span class="step-q">Use of funds</span>
-        <div>
-          <h4>3–5 paying design partners</h4>
-          <p>Founder-led sales into UK quant desks. 60-day pilots with proof-of-value metrics agreed upfront. First live exposure replay is the singular milestone.</p>
-        </div>
-      </div>
-      <div class="step-item">
-        <span class="step-q">The claim</span>
-        <div>
-          <h4>Procedural authority over evidence</h4>
-          <p>We are not claiming epistemic authority over markets. We claim to know — precisely and reproducibly — what decisions depended on. That is a smaller, testable, expandable wedge.</p>
-        </div>
-      </div>
-      <div class="step-item">
-        <span class="step-q">The vision</span>
-        <div>
-          <h4>The default way institutions answer hard questions</h4>
-          <p>Invariant becomes the infrastructure layer that makes learning survive power, pressure, and success. Not to assign blame. Not to enforce virtue. To make reliance legible.</p>
-        </div>
-      </div>
-      <div class="step-item">
-        <span class="step-q">Why us</span>
-        <div>
-          <h4>The primitive is locked</h4>
-          <p>The core concept — dependence under reuse, elevated by counterfactual consequence — is precise enough to build on and defend. Everything else follows from it.</p>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:40px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;">
-      <a class="cta-btn" href="mailto:contact@axiomcapitalresearch.com">Cmugarura9@gmail.com</a>
-      <a class="cta-ghost" href="https://axiomcapitalresearch.com">axiomcapitalresearch.com</a>
-    </div>
-  </div>
-  <div class="slide-footer">
-    <span>INVARIANT · AXIOM CAPITAL RESEARCH · CONFIDENTIAL</span>
-    <span>07</span>
   </div>
 </section>
 
 
-<script>
-const slides = document.querySelectorAll('.slide');
-const dots   = document.querySelectorAll('.dot');
-const bar    = document.getElementById('progress');
-let current  = 0;
+<!-- ══ RESOURCES ══ -->
+<section id="resources">
+  <div class="inner">
+    <div class="section-label">Resources</div>
+    <h2>Everything in one place.</h2>
+    <p class="lead">The deck, the demo, and the code. Three things that didn't exist a week ago.</p>
 
-function updateUI() {
-  dots.forEach((d,i) => d.classList.toggle('active', i === current));
-  bar.style.width = ((current + 1) / slides.length * 100) + '%';
-}
-function goSlide(n) {
-  current = Math.max(0, Math.min(slides.length - 1, n));
-  slides[current].scrollIntoView({ behavior: 'smooth' });
-  updateUI();
-}
+    <div class="resource-grid">
+      <a class="resource-card" href="https://nbviewer.org/github/wannabequantcmugz/Invariant/blob/main/demo/invariant_demo.ipynb" target="_blank">
+        <div class="resource-n">01</div>
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>
+        </div>
+        <h3>Live Demo</h3>
+        <p>Three realistic fund scenarios. Evidence Bundles generated automatically. Runs in Jupyter — no setup required to view.</p>
+        <span class="resource-link">nbviewer.org</span>
+      </a>
 
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      current = Array.from(slides).indexOf(e.target);
-      updateUI();
-    }
-  });
-}, { threshold: 0.5 });
-slides.forEach(s => obs.observe(s));
+      <a class="resource-card" href="invariant-deck-v2.html">
+        <div class="resource-n">02</div>
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>Investor Deck</h3>
+        <p>Seven slides. The problem, the primitive, the product, the market, and the ask. Pre-seed, UK B2B SaaS.</p>
+        <span class="resource-link">View deck</span>
+      </a>
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') goSlide(current + 1);
-  if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  goSlide(current - 1);
-});
+      <a class="resource-card" href="https://github.com/wannabequantcmugz/Invariant" target="_blank">
+        <div class="resource-n">03</div>
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        </div>
+        <h3>Source Code</h3>
+        <p>The full engine, three scenarios, and the notebook. MIT licensed. Clone it, run it, inspect the logic.</p>
+        <span class="resource-link">github.com</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-updateUI();
-</script>
+
+<!-- ══ RESEARCH CONSTITUTION ══ -->
+<section id="constitution">
+  <div class="inner">
+    <div class="section-label">Research Constitution</div>
+    <h2>Five principles.<br>Locked.</h2>
+    <p class="lead">Invariant survives success, politics, and time because it does not ask for virtue, acknowledgement, or confession.</p>
+
+    <div class="const-list">
+      <div class="const-item">
+        <span class="const-n">1</span>
+        <p><strong>Memory must resist reinterpretation.</strong> Structure beats prose. Dependence is observed, not reported.</p>
+      </div>
+      <div class="const-item">
+        <span class="const-n">2</span>
+        <p><strong>Evidence must bind success as tightly as failure.</strong> Wins rewrite history more aggressively than losses.</p>
+      </div>
+      <div class="const-item">
+        <span class="const-n">3</span>
+        <p><strong>No decision is blocked.</strong> But no important decision is forgettable.</p>
+      </div>
+      <div class="const-item">
+        <span class="const-n">4</span>
+        <p><strong>Influence is acknowledged and constrained.</strong> Nothing is hidden. Nothing is silent.</p>
+      </div>
+      <div class="const-item">
+        <span class="const-n">5</span>
+        <p><strong>Invariant never comforts.</strong> It confronts reality under power.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="inner">
+    <div class="section-label">Pre-Seed · UK B2B SaaS</div>
+    <h2>Seeking design<br>partners.</h2>
+    <p class="lead">
+      We are looking for <strong>3–5 quant desks</strong> willing to run a 60-day pilot.
+      Proof-of-value metrics agreed upfront. First live exposure replay is the milestone.
+    </p>
+    <p class="lead" style="margin-top:16px;">If the problem is real at your desk — or you know someone it would be real for — get in touch.</p>
+    <div class="contact-row">
+      <a class="btn-primary" href="mailto:contact@axiomcapitalresearch.com">contact@axiomcapitalresearch.com</a>
+      <a class="btn-ghost" href="https://github.com/wannabequantcmugz/Invariant" target="_blank">View the code →</a>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <span class="footer-left">INVARIANT · AXIOM CAPITAL RESEARCH · PRE-SEED</span>
+  <span class="footer-right">axiomcapitalresearch.com</span>
+</footer>
+
 </body>
 </html>
