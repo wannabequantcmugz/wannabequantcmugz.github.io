@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Research Library — Axiom Capital Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D12;
+    --panel:#12151C;
+    --panel-alt:#171B23;
+    --panel-raised:#1B1F28;
+    --border:#232830;
+    --border-soft:#1B1F27;
+    --text:#E8EAED;
+    --muted:#8A93A0;
+    --faint:#565E6B;
+    --blue:#4F8EF7;
+    --purple:#9B6BEA;
+    --amber:#E0A23D;
+    --green:#3ECF8E;
+    --red:#F1615F;
+    --grey:#7B8494;
+    --radius:11px;
+    --shadow:0 1px 2px rgba(0,0,0,.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'Inter',-apple-system,sans-serif;font-size:13.5px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  button,select{font-family:inherit;}
+
+  .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+
+  /* ---------- sidebar (shared) ---------- */
+  .sidebar{background:var(--panel);border-right:1px solid var(--border);padding:22px 16px;
+    display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+  .logo{padding:2px 8px 0;}
+  .logo-word{font-size:19px;font-weight:700;letter-spacing:0.18em;}
+  .logo-sub{font-size:9.5px;color:var(--faint);letter-spacing:0.16em;margin-top:3px;}
+  .logo:hover .logo-word{color:var(--blue);}
+  .nav{margin-top:26px;display:flex;flex-direction:column;gap:1px;}
+  .nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--muted);font-size:13px;font-weight:500;}
+  .nav a svg{flex:none;opacity:.85;}
+  .nav a.active{background:var(--panel-raised);color:var(--text);}
+  .nav a.active svg{color:var(--blue);opacity:1;}
+  .nav a:hover:not(.active){color:var(--text);}
+  .sidebar-spacer{flex:1;}
+  .quote-block{padding:14px 10px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);font-style:italic;line-height:1.5;}
+  .profile{display:flex;align-items:center;gap:9px;padding:10px 8px 0;border-top:1px solid var(--border);margin-top:10px;padding-top:14px;}
+  .profile .av{width:28px;height:28px;border-radius:50%;background:var(--panel-raised);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;flex:none;border:1px solid var(--border);}
+  .profile .name{font-size:12.5px;font-weight:600;}
+  .profile .role{font-size:10.5px;color:var(--faint);}
+
+  /* ---------- main ---------- */
+  .main{padding:26px 32px 70px;max-width:1360px;}
+  .page-head{margin-bottom:20px;}
+  h1{font-size:24px;font-weight:700;margin:0;letter-spacing:-0.01em;}
+  .page-sub{color:var(--muted);font-size:12.5px;margin-top:5px;max-width:60ch;}
+
+  /* controls bar */
+  .controls{
+    display:flex;flex-direction:column;gap:12px;
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:14px 16px;margin-bottom:18px;box-shadow:var(--shadow);
+  }
+  .controls-top{display:flex;gap:12px;align-items:center;}
+  .search-input{
+    flex:1;background:var(--panel-alt);border:1px solid var(--border);border-radius:9px;
+    padding:9px 14px;font-size:13px;color:var(--text);
+  }
+  .search-input::placeholder{color:var(--faint);}
+  .search-input:focus{outline:none;border-color:var(--blue);}
+  .sort-select{
+    background:var(--panel-alt);border:1px solid var(--border);border-radius:9px;
+    color:var(--text);padding:9px 12px;font-size:12.5px;
+  }
+  .result-count{font-size:11.5px;color:var(--faint);white-space:nowrap;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-size:12px;font-weight:500;padding:6px 13px;border-radius:20px;
+    background:var(--panel-alt);border:1px solid var(--border);color:var(--muted);cursor:pointer;
+  }
+  .chip:hover{color:var(--text);border-color:var(--border-strong,#2b323c);}
+  .chip.active{background:rgba(79,142,247,0.14);border-color:var(--blue);color:var(--blue);}
+
+  /* card grid */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rcard{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px;display:flex;flex-direction:column;gap:10px;
+    box-shadow:var(--shadow);transition:border-color .15s ease, transform .15s ease;
+  }
+  .rcard:hover{border-color:#2b323c;transform:translateY(-2px);}
+  .rcard-top{display:flex;align-items:flex-start;gap:10px;}
+  .rcard-icon{
+    width:34px;height:34px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:16px;background:var(--panel-alt);border:1px solid var(--border);
+  }
+  .rcard-title{font-size:14px;font-weight:700;line-height:1.35;}
+  .rcard-meta-row{display:flex;flex-wrap:wrap;gap:6px 8px;font-size:11px;color:var(--faint);}
+  .badge{
+    font-size:10px;font-weight:700;letter-spacing:0.03em;padding:2px 8px;border-radius:5px;
+  }
+  .rcard-summary{font-size:12.5px;color:var(--muted);line-height:1.5;flex:1;}
+  .rcard-foot{display:flex;justify-content:space-between;align-items:center;margin-top:2px;}
+  .rcard-date{font-size:11px;color:var(--faint);font-family:'IBM Plex Mono',monospace;}
+  .rcard-open{font-size:12px;font-weight:600;color:var(--blue);}
+
+  .empty-state{
+    grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);
+    background:var(--panel);border:1px dashed var(--border);border-radius:var(--radius);
+  }
+
+  .load-more-wrap{display:flex;justify-content:center;margin-top:22px;}
+  .load-more{
+    background:var(--panel-alt);border:1px solid var(--border);color:var(--text);
+    padding:10px 22px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;
+  }
+  .load-more:hover{border-color:var(--blue);color:var(--blue);}
+  .load-more:disabled{opacity:.4;cursor:default;}
+
+  @media (max-width: 1080px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width: 720px){ .grid{grid-template-columns:1fr;} .shell{grid-template-columns:1fr;} }
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <a class="logo" href="https://axiomcapitalresearch.com/" target="_blank" rel="noopener">
+      <div class="logo-word">AXIOM</div>
+      <div class="logo-sub">CAPITAL RESEARCH</div>
+    </a>
+    <nav class="nav">
+      <a href="research-dashboard.html">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="#">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V7l7-4 7 4v14"/><path d="M9 21v-6h4v6"/></svg>
+        Companies
+      </a>
+      <a href="research.html" class="active">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+        Research
+      </a>
+      <a href="#">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Notebook
+      </a>
+      <a href="#">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5h6a3 3 0 0 1 3 3v11a2.5 2.5 0 0 0-2.5-2.5H2z"/><path d="M22 5h-6a3 3 0 0 0-3 3v11a2.5 2.5 0 0 1 2.5-2.5H22z"/></svg>
+        Reading
+      </a>
+      <a href="#">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/></svg>
+        Archive
+      </a>
+      <a href="#">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
+        About
+      </a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="quote-block">“Research should preserve the reasoning, not just the conclusion.”</div>
+    <div class="profile">
+      <div class="av">A</div>
+      <div><div class="name">Analyst</div><div class="role">Research Desk</div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-head">
+      <h1>Research Library</h1>
+      <div class="page-sub">Every memorandum, note, framework and analysis produced at Axiom, in one connected archive — organised for depth, not frequency.</div>
+    </div>
+
+    <div class="controls">
+      <div class="controls-top">
+        <input class="search-input" id="searchInput" type="text" placeholder="Search by title, company, sector, ticker, or research type…" autocomplete="off"/>
+        <select class="sort-select" id="sortSelect">
+          <option value="newest">Newest</option>
+          <option value="updated">Recently Updated</option>
+          <option value="most-read">Most Read</option>
+          <option value="longest">Longest Read</option>
+          <option value="oldest">Oldest</option>
+        </select>
+        <div class="result-count" id="resultCount"></div>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="load-more-wrap">
+      <button class="load-more" id="loadMoreBtn">Load more research</button>
+    </div>
+  </main>
+</div>
+
+<script>
+  // ============ DATA MODEL ============
+  // Every research piece is one object in this array. New pieces just get
+  // appended here (or, later, fetched from an API) — the render pipeline
+  // below doesn't change no matter how many hundred entries this holds.
+  const TYPE_META = {
+    "Investment Memorandum": {icon:"📄", chip:"Memoranda", color:"var(--blue)"},
+    "Company Analysis":      {icon:"🏢", chip:"Company Analysis", color:"var(--green)"},
+    "Industry Report":       {icon:"🏭", chip:"Industry Reports", color:"var(--amber)"},
+    "Research Note":         {icon:"🗒️", chip:"Research Notes", color:"var(--purple)"},
+    "Framework":             {icon:"🧩", chip:"Frameworks", color:"var(--red)"},
+    "Market Observation":    {icon:"📈", chip:"Research Notes", color:"var(--purple)"},
+    "Book Summary":          {icon:"📚", chip:"Reading Notes", color:"var(--grey)"},
+    "Podcast Notes":         {icon:"🎙️", chip:"Reading Notes", color:"var(--grey)"},
+    "Reading Notes":         {icon:"📖", chip:"Reading Notes", color:"var(--grey)"},
+    "White Paper":           {icon:"📃", chip:"Industry Reports", color:"var(--amber)"},
+  };
+
+  const STATUS_META = {
+    "Draft":         {color:"var(--faint)", bg:"rgba(86,94,107,0.18)"},
+    "In Progress":   {color:"var(--amber)", bg:"rgba(224,162,61,0.14)"},
+    "Under Review":  {color:"var(--purple)", bg:"rgba(155,107,234,0.14)"},
+    "Published":     {color:"var(--green)", bg:"rgba(62,207,142,0.14)"},
+    "Archived":      {color:"var(--faint)", bg:"rgba(86,94,107,0.10)"},
+  };
+
+  const RESEARCH = [
+    {
+      slug:"qpam-memorandum",
+      title:"The Axiom Adaptive Multi-Factor Model",
+      type:"Investment Memorandum",
+      sector:"Quantitative / Multi-Factor",
+      tickers:[],
+      status:"Published",
+      published:"2026-07-22",
+      updated:"2026-07-22",
+      readMinutes:18,
+      reads:420,
+      summary:"Full construction of the adaptive multi-factor model behind Axiom's core strategy, including factor selection, weighting, and Q1 2026 backtest results."
+    },
+    {
+      slug:"business-model-of-royalties",
+      title:"The Business Model of Royalties",
+      type:"Framework",
+      sector:"Mining",
+      tickers:["FNV","RGLD"],
+      status:"Published",
+      published:"2026-07-22",
+      updated:"2026-07-22",
+      readMinutes:18,
+      reads:210,
+      summary:"An analysis of royalty companies and their asymmetric economics — why the model captures upside without carrying operating risk."
+    },
+    {
+      slug:"horizon-kinetics-notes",
+      title:"Horizon Kinetics — Podcast Notes",
+      type:"Podcast Notes",
+      sector:"Asset Management",
+      tickers:[],
+      status:"Published",
+      published:"2026-07-18",
+      updated:"2026-07-18",
+      readMinutes:12,
+      reads:180,
+      summary:"Notes on Murray Stahl's views on owner-operators, energy capex cycles, and why index concentration creates mispricings."
+    },
+    {
+      slug:"berkshire-letters-notes",
+      title:"Berkshire Hathaway Letters — Reading Notes",
+      type:"Reading Notes",
+      sector:"Value Investing",
+      tickers:["BRK.B"],
+      status:"Published",
+      published:"2026-07-11",
+      updated:"2026-07-16",
+      readMinutes:24,
+      reads:265,
+      summary:"Running notes across Buffett's shareholder letters — capital allocation principles that recur across four decades of writing."
+    },
+    {
+      slug:"rio-tinto-analysis",
+      title:"Rio Tinto: Company Analysis",
+      type:"Company Analysis",
+      sector:"Mining",
+      tickers:["RIO"],
+      status:"Published",
+      published:"2026-07-10",
+      updated:"2026-07-10",
+      readMinutes:22,
+      reads:150,
+      summary:"Iron ore cost curve position, capital returns policy, and the case for Rio as a low-cost, long-duration compounder."
+    },
+    {
+      slug:"ai-infrastructure-note",
+      title:"AI Infrastructure — Research Note",
+      type:"Research Note",
+      sector:"Technology",
+      tickers:["NVDA","MSFT"],
+      status:"In Progress",
+      published:null,
+      updated:"2026-07-20",
+      readMinutes:9,
+      reads:0,
+      summary:"Working note on data centre capex trajectories and which layers of the AI infrastructure stack retain pricing power."
+    },
+    {
+      slug:"microsoft-analysis",
+      title:"Microsoft: Company Analysis",
+      type:"Company Analysis",
+      sector:"Technology",
+      tickers:["MSFT"],
+      status:"Draft",
+      published:null,
+      updated:"2026-07-21",
+      readMinutes:0,
+      reads:0,
+      summary:"Draft thesis on Azure margin trajectory, Copilot attach rates, and durability of Microsoft's cloud and productivity moat."
+    },
+    {
+      slug:"semiconductor-equipment-overview",
+      title:"Semiconductor Equipment Industry Overview",
+      type:"Industry Report",
+      sector:"Semiconductors",
+      tickers:["ASML","AMAT"],
+      status:"Draft",
+      published:null,
+      updated:"2026-07-13",
+      readMinutes:0,
+      reads:0,
+      summary:"Mapping the equipment supply chain from lithography to etch and deposition, and where structural moats sit versus commodity share."
+    },
+    {
+      slug:"constellation-capital-allocation-memo",
+      title:"Constellation Software — Capital Allocation Memo",
+      type:"Investment Memorandum",
+      sector:"Software",
+      tickers:["CSU"],
+      status:"Under Review",
+      published:null,
+      updated:"2026-07-02",
+      readMinutes:15,
+      reads:60,
+      summary:"Draft thesis on acquisition cadence, hurdle-rate discipline, and whether the compounding model scales past its current base."
+    },
+    {
+      slug:"market-regimes-framework",
+      title:"Market Regimes: A Framework",
+      type:"Framework",
+      sector:"Macro / Quantitative",
+      tickers:[],
+      status:"In Progress",
+      published:null,
+      updated:"2026-07-16",
+      readMinutes:11,
+      reads:40,
+      summary:"A working framework for classifying market regimes and testing which factor exposures work best in each."
+    },
+    {
+      slug:"hidden-markov-models-regime-detection",
+      title:"Hidden Markov Models for Regime Detection",
+      type:"White Paper",
+      sector:"Quantitative",
+      tickers:[],
+      status:"In Progress",
+      published:null,
+      updated:"2026-07-14",
+      readMinutes:16,
+      reads:35,
+      summary:"Applying hidden Markov models to detect latent market regimes, with early results against a simple factor-rotation overlay."
+    },
+    {
+      slug:"brazil-soybean-futures-observation",
+      title:"Brazil Soybean Futures — Market Observation",
+      type:"Market Observation",
+      sector:"Commodities",
+      tickers:[],
+      status:"Draft",
+      published:null,
+      updated:"2026-07-15",
+      readMinutes:0,
+      reads:0,
+      summary:"Early observations on Brazilian planting conditions and export pace, and what they imply for Q4 futures pricing."
+    },
+    {
+      slug:"asml-lithography-moat",
+      title:"ASML: Why the Lithography Moat Widens",
+      type:"Company Analysis",
+      sector:"Semiconductors",
+      tickers:["ASML"],
+      status:"Published",
+      published:"2026-07-14",
+      updated:"2026-07-14",
+      readMinutes:20,
+      reads:310,
+      summary:"Updated view on EUV pricing power ahead of the next capex cycle, and why the moat widens rather than narrows over time."
+    },
+    {
+      slug:"long-only-quality-framework",
+      title:"Long-Only Quality Investing: A Framework",
+      type:"Framework",
+      sector:"Equities",
+      tickers:[],
+      status:"Under Review",
+      published:null,
+      updated:"2026-07-13",
+      readMinutes:14,
+      reads:75,
+      summary:"Defining criteria for a long-only quality universe — returns on capital, reinvestment runway, and balance sheet resilience."
+    },
+    {
+      slug:"poor-charlies-almanack-notes",
+      title:"Poor Charlie's Almanack — Reading Notes",
+      type:"Book Summary",
+      sector:"Mental Models",
+      tickers:[],
+      status:"Published",
+      published:"2026-06-30",
+      updated:"2026-07-05",
+      readMinutes:19,
+      reads:198,
+      summary:"Notes on Munger's latticework of mental models, and where they apply directly to Axiom's own research process."
+    },
+  ];
+
+  // ============ STATE ============
+  const CHIP_ORDER = ["All Research","Memoranda","Company Analysis","Industry Reports","Research Notes","Frameworks","Reading Notes"];
+  let activeChip = "All Research";
+  let query = "";
+  let sortBy = "newest";
+  let visibleCount = 6;
+  const PAGE_SIZE = 6;
+
+  // ============ RENDER: CHIPS ============
+  const chipsEl = document.getElementById('chips');
+  CHIP_ORDER.forEach(label=>{
+    const c = document.createElement('div');
+    c.className = 'chip' + (label===activeChip ? ' active' : '');
+    c.textContent = label;
+    c.dataset.chip = label;
+    c.onclick = ()=>{ activeChip = label; visibleCount = PAGE_SIZE; renderAll(); };
+    chipsEl.appendChild(c);
+  });
+
+  function updateChipStyles(){
+    [...chipsEl.children].forEach(c=>{
+      c.classList.toggle('active', c.dataset.chip===activeChip);
+    });
+  }
+
+  // ============ FILTER / SORT PIPELINE ============
+  function getFiltered(){
+    let items = RESEARCH.slice();
+
+    if(activeChip !== "All Research"){
+      items = items.filter(r => (TYPE_META[r.type]||{}).chip === activeChip);
+    }
+
+    if(query.trim()){
+      const q = query.trim().toLowerCase();
+      items = items.filter(r=>{
+        const haystack = [r.title, r.sector, r.type, ...(r.tickers||[])].join(' ').toLowerCase();
+        return haystack.includes(q);
+      });
+    }
+
+    const dateKey = (r, field) => r[field] ? new Date(r[field]).getTime() : 0;
+    switch(sortBy){
+      case "newest":    items.sort((a,b)=> dateKey(b,'published') - dateKey(a,'published')); break;
+      case "oldest":    items.sort((a,b)=> dateKey(a,'published') - dateKey(b,'published')); break;
+      case "updated":   items.sort((a,b)=> dateKey(b,'updated') - dateKey(a,'updated')); break;
+      case "most-read": items.sort((a,b)=> b.reads - a.reads); break;
+      case "longest":   items.sort((a,b)=> b.readMinutes - a.readMinutes); break;
+    }
+    return items;
+  }
+
+  // ============ CARD COMPONENT ============
+  function formatDate(iso){
+    if(!iso) return "—";
+    return new Date(iso).toLocaleDateString('en-US',{day:'2-digit', month:'short', year:'numeric'});
+  }
+
+  function renderCard(r){
+    const tm = TYPE_META[r.type] || {icon:"📄", color:"var(--blue)"};
+    const sm = STATUS_META[r.status] || STATUS_META["Draft"];
+    const el = document.createElement('a');
+    el.className = 'rcard';
+    el.href = `research/${r.slug}.html`;
+    el.innerHTML = `
+      <div class="rcard-top">
+        <div class="rcard-icon">${tm.icon}</div>
+        <div style="flex:1">
+          <div class="rcard-title">${r.title}</div>
+          <div class="rcard-meta-row">
+            <span style="color:${tm.color}">${r.type}</span>
+            <span>·</span><span>${r.sector}</span>
+          </div>
+        </div>
+      </div>
+      <div class="rcard-meta-row">
+        <span class="badge" style="color:${sm.color};background:${sm.bg}">${r.status}</span>
+        <span>${r.readMinutes ? r.readMinutes + ' min read' : 'Not yet timed'}</span>
+      </div>
+      <div class="rcard-summary">${r.summary}</div>
+      <div class="rcard-foot">
+        <span class="rcard-date">${r.published ? formatDate(r.published) : 'Updated ' + formatDate(r.updated)}</span>
+        <span class="rcard-open">Open Research →</span>
+      </div>
+    `;
+    return el;
+  }
+
+  // ============ MAIN RENDER ============
+  const gridEl = document.getElementById('grid');
+  const countEl = document.getElementById('resultCount');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+  function renderAll(){
+    updateChipStyles();
+    const filtered = getFiltered();
+    gridEl.innerHTML = '';
+
+    if(filtered.length === 0){
+      gridEl.innerHTML = `<div class="empty-state">No research matches “${query}” yet. Try a different search or filter.</div>`;
+      loadMoreBtn.style.display = 'none';
+      countEl.textContent = '0 results';
+      return;
+    }
+
+    const shown = filtered.slice(0, visibleCount);
+    shown.forEach(r => gridEl.appendChild(renderCard(r)));
+
+    countEl.textContent = `${filtered.length} result${filtered.length===1?'':'s'}`;
+    if(visibleCount >= filtered.length){
+      loadMoreBtn.style.display = 'none';
+    } else {
+      loadMoreBtn.style.display = 'inline-block';
+      loadMoreBtn.textContent = `Load more research (${filtered.length - visibleCount} remaining)`;
+    }
+  }
+
+  document.getElementById('searchInput').addEventListener('input', (e)=>{
+    query = e.target.value; visibleCount = PAGE_SIZE; renderAll();
+  });
+  document.getElementById('sortSelect').addEventListener('change', (e)=>{
+    sortBy = e.target.value; renderAll();
+  });
+  loadMoreBtn.addEventListener('click', ()=>{
+    visibleCount += PAGE_SIZE; renderAll();
+  });
+
+  renderAll();
+</script>
+
+</body>
+</html>
