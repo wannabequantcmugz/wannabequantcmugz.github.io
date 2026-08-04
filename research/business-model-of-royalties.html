@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Business Model of Royalties | Axiom Capital Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D12; --panel:#12151C; --panel-alt:#171B23; --panel-raised:#1B1F28;
+    --border:#232830; --border-soft:#1B1F27; --text:#E8EAED; --muted:#8A93A0; --faint:#565E6B;
+    --blue:#4F8EF7; --purple:#9B6BEA; --amber:#E0A23D; --green:#3ECF8E; --red:#F1615F; --grey:#7B8494;
+    --radius:11px; --shadow:0 1px 2px rgba(0,0,0,.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .serif{font-family:'Source Serif 4',Georgia,serif;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+
+  .progress-rail{position:fixed;top:0;left:0;right:0;height:2.5px;background:var(--border);z-index:50;}
+  .progress-fill{height:100%;width:0%;background:var(--blue);transition:width .1s linear;}
+
+  .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+
+  .sidebar{background:var(--panel);border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+  .logo{padding:2px 8px 0;}
+  .logo-word{font-size:19px;font-weight:700;letter-spacing:0.18em;}
+  .logo-sub{font-size:9.5px;color:var(--faint);letter-spacing:0.16em;margin-top:3px;}
+  .logo:hover .logo-word{color:var(--blue);}
+  .nav{margin-top:26px;display:flex;flex-direction:column;gap:1px;}
+  .nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--muted);font-size:13px;font-weight:500;}
+  .nav a svg{flex:none;opacity:.85;}
+  .nav a.active{background:var(--panel-raised);color:var(--text);}
+  .nav a.active svg{color:var(--blue);opacity:1;}
+  .nav a:hover:not(.active){color:var(--text);}
+  .sidebar-spacer{flex:1;}
+  .profile{display:flex;align-items:center;gap:9px;padding:14px 8px 0;border-top:1px solid var(--border);margin-top:10px;}
+  .profile .av{width:28px;height:28px;border-radius:50%;background:var(--panel-raised);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;flex:none;border:1px solid var(--border);}
+  .profile .name{font-size:12.5px;font-weight:600;}
+  .profile .role{font-size:10.5px;color:var(--faint);}
+
+  .main{padding:26px 32px 80px;}
+  .content-wrap{display:grid;grid-template-columns:1fr 280px;gap:28px;max-width:1200px;}
+
+  .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;margin-bottom:18px;}
+  .back-link:hover{color:var(--blue);}
+
+  .resume-banner{
+    display:none;align-items:center;justify-content:space-between;gap:12px;
+    background:rgba(79,142,247,0.10);border:1px solid rgba(79,142,247,0.35);
+    border-radius:9px;padding:11px 16px;margin-bottom:18px;font-size:12.5px;
+  }
+  .resume-banner .resume-text{color:var(--text);}
+  .resume-banner .resume-pct{color:var(--blue);font-weight:700;font-family:'IBM Plex Mono',monospace;}
+  .resume-actions{display:flex;gap:8px;flex:none;}
+  .resume-btn{background:var(--blue);color:#0B0D12;border:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .dismiss-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:7px;font-size:12px;cursor:pointer;}
+
+  .art-head{margin-bottom:22px;}
+  .art-badges{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:0.03em;padding:3px 9px;border-radius:5px;}
+  .art-title{font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;line-height:1.3;margin:0 0 6px;}
+  .art-sub{color:var(--muted);font-size:13.5px;margin-bottom:14px;}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px 20px;
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;}
+  .meta-item .meta-label{font-size:10px;color:var(--faint);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:3px;}
+  .meta-item .meta-val{font-size:12.5px;font-weight:500;}
+
+  .quality-strip{display:flex;gap:26px;flex-wrap:wrap;background:var(--panel-alt);border:1px solid var(--border);
+    border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;}
+  .q-item .q-label{font-size:10px;color:var(--faint);letter-spacing:0.04em;margin-bottom:3px;}
+  .q-item .q-val{font-size:14px;font-weight:600;font-family:'IBM Plex Mono',monospace;}
+
+  .export-bar{display:flex;gap:8px;margin-bottom:26px;flex-wrap:wrap;}
+  .export-btn{background:var(--panel);border:1px solid var(--border);color:var(--muted);
+    padding:8px 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .export-btn:hover{color:var(--text);border-color:var(--blue);}
+
+  .article{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow);}
+  .article h2{font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;margin:34px 0 12px;padding-top:6px;border-top:1px solid var(--border-soft);}
+  .article h2:first-child{margin-top:0;border-top:none;padding-top:0;}
+  .article h3{font-size:14.5px;font-weight:700;margin:22px 0 8px;color:var(--text);}
+  .article p{color:var(--muted);margin:0 0 12px;max-width:74ch;}
+  .article ul, .article ol{color:var(--muted);margin:0 0 14px;padding-left:20px;}
+  .article li{margin-bottom:6px;max-width:72ch;}
+  .article strong{color:var(--text);font-weight:600;}
+
+  .exec-list{list-style:none;padding:0;margin:0 0 8px;}
+  .exec-list li{position:relative;padding-left:18px;margin-bottom:10px;color:var(--muted);max-width:74ch;}
+  .exec-list li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--blue);}
+
+  table{width:100%;border-collapse:collapse;margin:10px 0 20px;font-size:12.5px;}
+  th{text-align:left;color:var(--faint);font-weight:600;font-size:11px;letter-spacing:0.03em;
+    text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border);}
+  td{padding:10px 12px;border-bottom:1px solid var(--border-soft);color:var(--muted);vertical-align:top;}
+  tr td:first-child{color:var(--text);font-weight:600;white-space:nowrap;}
+
+  blockquote{margin:16px 0;padding:14px 18px;border-left:2.5px solid var(--blue);background:var(--panel-alt);border-radius:0 8px 8px 0;font-style:italic;color:var(--text);font-size:13.5px;}
+  .diagram{background:var(--panel-alt);border:1px solid var(--border);border-radius:9px;padding:18px;margin:14px 0 20px;}
+
+  .flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;}
+  .flow-box{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px 14px;min-width:140px;}
+  .flow-box .fb-label{font-size:9.5px;color:var(--faint);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:3px;}
+  .flow-box .fb-val{font-weight:600;font-size:12.5px;}
+  .flow-arrow{color:var(--faint);font-size:16px;}
+
+  .sources-list{list-style:none;padding:0;margin:0;}
+  .sources-list li{padding:9px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px;}
+  .sources-list li:last-child{border-bottom:none;}
+
+  .aside{display:flex;flex-direction:column;gap:14px;position:sticky;top:26px;height:fit-content;}
+  .aside-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);}
+  .aside-title{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--faint);margin-bottom:12px;}
+  .aside-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px;}
+  .aside-row:last-child{border-bottom:none;}
+  .aside-row .name{font-weight:600;}
+  .aside-row .sub{color:var(--faint);font-size:11px;font-family:'IBM Plex Mono',monospace;}
+  .tag-row{display:flex;flex-wrap:wrap;gap:6px;}
+  .tag-pill{font-size:11px;color:var(--muted);background:var(--panel-alt);border:1px solid var(--border);border-radius:6px;padding:3px 9px;}
+  .empty-note{font-size:12px;color:var(--faint);font-style:italic;}
+
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--panel-raised);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:8px;
+    font-size:12.5px;opacity:0;pointer-events:none;transition:all .25s ease;box-shadow:0 8px 20px rgba(0,0,0,.3);}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (max-width: 980px){ .content-wrap{grid-template-columns:1fr;} .aside{position:static;} }
+  @media (max-width: 720px){ .shell{grid-template-columns:1fr;} }
+  @media print{
+    .sidebar,.export-bar,.progress-rail,.aside,.back-link,.resume-banner{display:none !important;}
+    body{background:#fff;color:#111;}
+    .article{border:none;box-shadow:none;background:#fff;}
+    .content-wrap{grid-template-columns:1fr;}
+  }
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <a class="logo" href="https://axiomcapitalresearch.com/" target="_blank" rel="noopener">
+      <div class="logo-word">AXIOM</div>
+      <div class="logo-sub">CAPITAL RESEARCH</div>
+    </a>
+    <nav class="nav">
+      <a href="../research-dashboard.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V7l7-4 7 4v14"/><path d="M9 21v-6h4v6"/></svg>Companies</a>
+      <a href="../research.html" class="active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>Research</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Notebook</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5h6a3 3 0 0 1 3 3v11a2.5 2.5 0 0 0-2.5-2.5H2z"/><path d="M22 5h-6a3 3 0 0 0-3 3v11a2.5 2.5 0 0 1 2.5-2.5H22z"/></svg>Reading</a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="profile">
+      <div class="av">A</div>
+      <div><div class="name">Analyst</div><div class="role">Research Desk</div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content-wrap">
+      <div>
+        <a class="back-link" href="../research.html">← Back to Research Library</a>
+
+        <div class="resume-banner" id="resumeBanner">
+          <div class="resume-text">You were <span class="resume-pct">0%</span> through this framework.</div>
+          <div class="resume-actions">
+            <button class="resume-btn" id="resumeBtn">Continue Reading</button>
+            <button class="dismiss-btn" id="dismissBtn">Dismiss</button>
+          </div>
+        </div>
+
+        <div class="art-head">
+          <div class="art-badges">
+            <span class="badge" style="color:var(--green);background:rgba(62,207,142,0.14)">Published</span>
+            <span class="badge" style="color:var(--red);background:rgba(241,97,95,0.14)">Framework</span>
+          </div>
+          <h1 class="art-title">The Business Model of Royalties</h1>
+          <div class="art-sub">Why royalty companies capture the upside of a hard-asset business without carrying its operating risk — and how to tell a durable royalty franchise from a fragile one.</div>
+
+          <div class="meta-grid">
+            <div class="meta-item"><div class="meta-label">Author</div><div class="meta-val">Axiom Research Desk</div></div>
+            <div class="meta-item"><div class="meta-label">Sector</div><div class="meta-val">Mining / Royalties</div></div>
+            <div class="meta-item"><div class="meta-label">Companies</div><div class="meta-val">Franco-Nevada, Royal Gold</div></div>
+            <div class="meta-item"><div class="meta-label">Published</div><div class="meta-val">22 Jul 2026</div></div>
+            <div class="meta-item"><div class="meta-label">Difficulty</div><div class="meta-val">Intermediate</div></div>
+            <div class="meta-item"><div class="meta-label">Reading Time</div><div class="meta-val">18 min</div></div>
+          </div>
+
+          <div class="quality-strip">
+            <div class="q-item"><div class="q-label">SOURCES USED</div><div class="q-val">5</div></div>
+            <div class="q-item"><div class="q-label">DIAGRAMS</div><div class="q-val">2</div></div>
+            <div class="q-item"><div class="q-label">MODEL</div><div class="q-val">Royalty NAV</div></div>
+            <div class="q-item"><div class="q-label">LAST UPDATED</div><div class="q-val" id="lastUpdated">—</div></div>
+          </div>
+
+          <div class="export-bar">
+            <button class="export-btn" onclick="window.print()">⬇ Download PDF</button>
+            <button class="export-btn" onclick="copyCitation()">❝ Copy Citation</button>
+            <button class="export-btn" onclick="shareLink()">🔗 Share Link</button>
+            <button class="export-btn" onclick="window.print()">🖨 Print Version</button>
+          </div>
+        </div>
+
+        <article class="article">
+
+          <h2>Executive Summary</h2>
+          <ul class="exec-list">
+            <li>A royalty is a contractual right to a slice of revenue or production from an asset, purchased once and then held with no further capital obligation — the buyer pre-pays for a stream of future cash flow instead of building or operating anything.</li>
+            <li>Because the royalty holder doesn't fund the mine, the well, or the plant that produces the underlying commodity, its cost structure is almost entirely fixed, which is why mature royalty companies run operating margins in the 80–90% range even as the operators beneath them absorb full commodity-price and cost-inflation risk.</li>
+            <li>The model's real edge isn't the margin — it's the optionality. Exploration success, mine expansions, and new discoveries on royalty ground accrue to the royalty holder for free, without a matching call on its balance sheet.</li>
+            <li>The risk that actually matters is capital allocation: whether management pays a fair price for royalties in the deal itself, or whether it chases growth and overpays late in a cycle.</li>
+            <li>The model generalises well beyond mining — the same "who bears the capex, who captures the toll" structure shows up in music and pharma royalties, exchanges, and land leases.</li>
+          </ul>
+
+          <h2>Investment Thesis</h2>
+          <p>Royalty companies are best understood not as mining companies with better margins, but as a different asset class entirely: a portfolio of long-dated call options on other people's capital expenditure. The thesis holds when three things are true together — the underlying commodity or asset class has a believable long-run demand case, the royalty operator has the discipline to buy those options cheaply (typically in downcycles, when operators are cash-starved and willing to sell royalties to fund development), and the portfolio is diversified enough that no single jurisdiction or mine failure can materially impair NAV. Where those three hold, a royalty company can compound through a commodity cycle in a way the underlying operators structurally cannot.</p>
+
+          <h2>Research</h2>
+
+          <h3>1. What a Royalty Actually Is</h3>
+          <p>Strip away the mining-specific language and a royalty is a simple financial instrument: the holder pays an upfront sum for the right to a percentage of revenue (a royalty) or a fixed volume of production at a pre-agreed discounted price (a stream), for the life of the asset. The operator retains full control of the mine, well, or plant, and bears all of the capex, opex, environmental liability, and operating risk. The royalty holder's only exposure is to whether the asset produces at all — it has no say in, and no further obligation toward, how it's run.</p>
+
+          <div class="diagram">
+            <div class="flow">
+              <div class="flow-box"><div class="fb-label">Operator</div><div class="fb-val">Funds capex, opex, permits</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-box"><div class="fb-label">Production</div><div class="fb-val">Ore, oil, gas extracted</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-box"><div class="fb-label">Royalty holder</div><div class="fb-val">Collects % of revenue, no opex</div></div>
+            </div>
+          </div>
+
+          <h3>2. Why the Margins Are Structurally High</h3>
+          <p>A royalty company's cost base is close to fixed: a small team to source, underwrite, and manage a portfolio of contracts, plus corporate overhead. It doesn't hire a mining workforce, buy equipment, or carry inventory. Revenue, by contrast, scales directly with the commodity price and the volume the operator produces — so incremental revenue drops through to the bottom line at close to 100%. This is the structural reason Franco-Nevada and Royal Gold have run operating margins around 80–90% through multiple commodity cycles, a level no operating miner sustains, because the operator is the one absorbing labour cost inflation, strip-ratio changes, and equipment capex.</p>
+
+          <h3>3. The Optionality Nobody Prices Correctly</h3>
+          <p>The mispricing sits in how the market values what a royalty portfolio doesn't yet produce. Most royalty companies hold two kinds of assets: producing royalties, which the market values reasonably well on a discounted cash flow basis, and non-producing or "optionality" royalties on land that hasn't been developed or fully explored. These are frequently modelled at close to zero, because there's no current cash flow to discount. But every dollar an operator spends on exploration or expansion on royalty ground increases the resource base the royalty applies to — for free, from the royalty holder's perspective. As exploration becomes harder and new discoveries scarcer industry-wide, the option value of ground already under royalty rises, and portfolios accumulated cheaply during past downturns become disproportionately valuable.</p>
+
+          <h3>4. Royalty vs. Streaming vs. Equity Ownership</h3>
+          <table>
+            <thead><tr><th>Structure</th><th>What's purchased</th><th>Operating risk</th><th>Upside capture</th></tr></thead>
+            <tbody>
+              <tr><td>Royalty</td><td>% of revenue, in perpetuity or over asset life</td><td>None — no capex or opex exposure</td><td>Full exposure to price and volume upside on the royalty %</td></tr>
+              <tr><td>Streaming</td><td>Fixed volume at a pre-agreed discounted price</td><td>None — pays only the discounted price per unit</td><td>Full exposure to spot price above the fixed price</td></tr>
+              <tr><td>Equity in the operator</td><td>Ownership of the whole business</td><td>Full — capex, opex, debt, permitting, closure liability</td><td>Full, but diluted by cost inflation and reinvestment needs</td></tr>
+            </tbody>
+          </table>
+          <p>The trade-off is control: an equity holder can influence capital allocation directly; a royalty or streaming holder cannot, and depends entirely on the operator's competence and solvency to keep producing.</p>
+
+          <h3>5. When Royalty Companies Get Built — and When They Get Broken</h3>
+          <p>The best vintages for acquiring royalties are bear markets, when operators are cash-constrained and will sell a slice of future revenue to fund near-term development rather than dilute equity or add debt at a bad point in the cycle. Franco-Nevada and Wheaton Precious Metals both assembled some of their highest-quality royalty and streaming assets during the 2010–2014 downturn in gold and base metals, when capital for miners was scarce. Royalty companies get broken the opposite way: by chasing growth late in an upcycle, overpaying for royalties when operators no longer need the capital and can negotiate from strength, or by taking on jurisdictional risk without pricing it — a mine expropriation or permit revocation in a weak-governance jurisdiction can impair a royalty's value just as completely as it impairs the underlying equity, with no operational lever to pull in response.</p>
+
+          <h3>6. A Simple Way to Underwrite a Royalty Portfolio</h3>
+          <p>A workable underwriting approach separates the portfolio into two layers and values them differently. The producing layer can be discounted cash-flow modelled with reasonable confidence, using the operator's disclosed reserves and a conservative long-run commodity price. The non-producing and exploration layer should not be modelled as a cash flow at all — it should be treated as a call option, priced qualitatively based on the quality of the ground, the operator's exploration budget, and the base rate of expansion success in that jurisdiction and commodity. A portfolio trading near or below the DCF value of its producing layer, with a large non-producing layer effectively included for free, is the profile worth paying attention to.</p>
+
+          <h3>7. Where the Same Model Shows Up Outside Mining</h3>
+          <p>The underlying structure — someone else bears the capex, the royalty holder collects a toll on the output — recurs well outside mining. Music and pharmaceutical royalties work identically: a songwriter or drug developer sells a claim on future revenue to a specialist holder who takes on no production risk. Land royalties in energy infrastructure, and toll-style businesses like exchanges collecting a fee on transaction volume, follow the same logic with a different underlying asset. Recognising the pattern — a fixed claim on someone else's variable output, purchased for a fixed price — is more useful than treating royalties as a mining-sector curiosity.</p>
+
+          <h2>Related: Horizon Kinetics on Royalties as an Inflation Hedge</h2>
+          <p>This framework connects directly to the Horizon Kinetics note in this library — James Davolos makes the same structural argument from the inflation side: capital-light royalty and land-lease businesses are, in his framing, mispriced call options on a structurally higher-inflation decade, for exactly the reasons laid out above.</p>
+
+          <h2>Sources</h2>
+          <ul class="sources-list">
+            <li>Franco-Nevada Corporation — investor presentations and annual reports</li>
+            <li>Royal Gold, Inc. — investor presentations and annual reports</li>
+            <li>Wheaton Precious Metals — streaming agreement disclosures</li>
+            <li>Axiom Research Desk — internal royalty NAV model</li>
+            <li>Axiom Research Desk — Horizon Kinetics podcast notes (this library)</li>
+          </ul>
+
+        </article>
+      </div>
+
+      <aside class="aside">
+        <div class="aside-card">
+          <div class="aside-title">Related Companies</div>
+          <div class="aside-row"><span class="name">Franco-Nevada</span><span class="sub">FNV</span></div>
+          <div class="aside-row"><span class="name">Royal Gold</span><span class="sub">RGLD</span></div>
+          <div class="aside-row"><span class="name">Wheaton Precious Metals</span><span class="sub">WPM</span></div>
+        </div>
+
+        <div class="aside-card">
+          <div class="aside-title">Related Research</div>
+          <div class="aside-row"><a href="horizon-kinetics-notes.html" class="name">Elegant Equities for High Inflation</a></div>
+          <div class="aside-row"><a href="../research.html" class="name">The Axiom Adaptive Multi-Factor Model</a></div>
+        </div>
+
+        <div class="aside-card">
+          <div class="aside-title">Notebook References</div>
+          <div class="empty-note">No notebook entries linked yet — entries tagged "Royalties" or "Optionality" will appear here.</div>
+        </div>
+
+        <div class="aside-card">
+          <div class="aside-title">Reading Sources</div>
+          <div class="tag-row">
+            <span class="tag-pill">Royalties</span>
+            <span class="tag-pill">Optionality</span>
+            <span class="tag-pill">Mining</span>
+            <span class="tag-pill">Capital Allocation</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const SLUG = 'business-model-of-royalties';
+  const PROGRESS_KEY = 'axiom:progress:' + SLUG;
+  const fill = document.getElementById('progressFill');
+  const banner = document.getElementById('resumeBanner');
+  let saveTimer = null;
+
+  function getMaxScroll(){
+    const h = document.documentElement;
+    return h.scrollHeight - h.clientHeight;
+  }
+  function currentPercent(){
+    const max = getMaxScroll();
+    return max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0;
+  }
+  function saveProgress(pct){
+    try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify({pct: Math.round(pct), t: Date.now()})); }
+    catch(e){ /* storage unavailable — progress just won't persist */ }
+  }
+  function updateProgress(){
+    const pct = currentPercent();
+    fill.style.width = pct + '%';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>saveProgress(pct), 400);
+  }
+  document.addEventListener('scroll', updateProgress);
+
+  (function initResume(){
+    let saved = null;
+    try{ saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || 'null'); }catch(e){}
+    if(saved && saved.pct > 4 && saved.pct < 96){
+      banner.querySelector('.resume-pct').textContent = saved.pct + '%';
+      banner.style.display = 'flex';
+      document.getElementById('resumeBtn').onclick = ()=>{
+        window.scrollTo({top: getMaxScroll() * (saved.pct/100), behavior:'smooth'});
+        banner.style.display = 'none';
+      };
+      document.getElementById('dismissBtn').onclick = ()=> banner.style.display = 'none';
+    }
+    updateProgress();
+  })();
+
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2200);
+  }
+  function copyCitation(){
+    const citation = `Axiom Research Desk (2026). "The Business Model of Royalties." Axiom Capital Research, 22 July 2026.`;
+    navigator.clipboard?.writeText(citation).then(()=>showToast('Citation copied to clipboard')).catch(()=>showToast('Could not copy — select and copy manually'));
+  }
+  function shareLink(){
+    navigator.clipboard?.writeText(window.location.href).then(()=>showToast('Link copied to clipboard')).catch(()=>showToast('Could not copy — copy the URL manually'));
+  }
+</script>
+
+</body>
+</html>
