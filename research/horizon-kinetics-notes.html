@@ -53,6 +53,18 @@
   .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;margin-bottom:18px;}
   .back-link:hover{color:var(--blue);}
 
+  .resume-banner{
+    display:none;align-items:center;justify-content:space-between;gap:12px;
+    background:rgba(79,142,247,0.10);border:1px solid rgba(79,142,247,0.35);
+    border-radius:9px;padding:11px 16px;margin-bottom:18px;font-size:12.5px;
+  }
+  .resume-banner .resume-text{color:var(--text);}
+  .resume-banner .resume-pct{color:var(--blue);font-weight:700;font-family:'IBM Plex Mono',monospace;}
+  .resume-actions{display:flex;gap:8px;flex:none;}
+  .resume-btn{background:var(--blue);color:#0B0D12;border:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .dismiss-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:7px;font-size:12px;cursor:pointer;}
+  @media print{ .resume-banner{display:none !important;} }
+
   /* article header */
   .art-head{margin-bottom:22px;}
   .art-badges{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
@@ -171,6 +183,14 @@
     <div class="content-wrap">
       <div>
         <a class="back-link" href="../research.html">← Back to Research Library</a>
+
+        <div class="resume-banner" id="resumeBanner">
+          <div class="resume-text">You were <span class="resume-pct">0%</span> through this note.</div>
+          <div class="resume-actions">
+            <button class="resume-btn" id="resumeBtn">Continue Reading</button>
+            <button class="dismiss-btn" id="dismissBtn">Dismiss</button>
+          </div>
+        </div>
 
         <div class="art-head">
           <div class="art-badges">
@@ -347,16 +367,48 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // reading progress (session-only — no persistence across visits)
+  // reading progress — persisted per-article via localStorage, so a visitor
+  // who leaves halfway through sees a "Continue Reading" prompt next visit.
+  const SLUG = 'horizon-kinetics-notes';
+  const PROGRESS_KEY = 'axiom:progress:' + SLUG;
   const fill = document.getElementById('progressFill');
-  function updateProgress(){
+  const banner = document.getElementById('resumeBanner');
+  let saveTimer = null;
+
+  function getMaxScroll(){
     const h = document.documentElement;
-    const scrolled = h.scrollTop;
-    const max = h.scrollHeight - h.clientHeight;
-    fill.style.width = max > 0 ? Math.min(100, (scrolled/max)*100) + '%' : '0%';
+    return h.scrollHeight - h.clientHeight;
+  }
+  function currentPercent(){
+    const max = getMaxScroll();
+    return max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0;
+  }
+  function saveProgress(pct){
+    try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify({pct: Math.round(pct), t: Date.now()})); }
+    catch(e){ /* storage unavailable — progress just won't persist */ }
+  }
+  function updateProgress(){
+    const pct = currentPercent();
+    fill.style.width = pct + '%';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>saveProgress(pct), 400);
   }
   document.addEventListener('scroll', updateProgress);
-  updateProgress();
+
+  (function initResume(){
+    let saved = null;
+    try{ saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || 'null'); }catch(e){}
+    if(saved && saved.pct > 4 && saved.pct < 96){
+      banner.querySelector('.resume-pct').textContent = saved.pct + '%';
+      banner.style.display = 'flex';
+      document.getElementById('resumeBtn').onclick = ()=>{
+        window.scrollTo({top: getMaxScroll() * (saved.pct/100), behavior:'smooth'});
+        banner.style.display = 'none';
+      };
+      document.getElementById('dismissBtn').onclick = ()=> banner.style.display = 'none';
+    }
+    updateProgress();
+  })();
 
   document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
 
