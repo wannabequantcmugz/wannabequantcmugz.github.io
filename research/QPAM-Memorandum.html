@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Axiom Adaptive Multi-Factor Model — Under Review | Axiom Capital Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D12; --panel:#12151C; --panel-alt:#171B23; --panel-raised:#1B1F28;
+    --border:#232830; --border-soft:#1B1F27; --text:#E8EAED; --muted:#8A93A0; --faint:#565E6B;
+    --blue:#4F8EF7; --purple:#9B6BEA; --amber:#E0A23D; --green:#3ECF8E; --red:#F1615F;
+    --radius:11px; --shadow:0 1px 2px rgba(0,0,0,.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .serif{font-family:'Source Serif 4',Georgia,serif;}
+  a{color:inherit;text-decoration:none;}
+
+  .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+  .sidebar{background:var(--panel);border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+  .logo{padding:2px 8px 0;}
+  .logo-word{font-size:19px;font-weight:700;letter-spacing:0.18em;}
+  .logo-sub{font-size:9.5px;color:var(--faint);letter-spacing:0.16em;margin-top:3px;}
+  .logo:hover .logo-word{color:var(--blue);}
+  .nav{margin-top:26px;display:flex;flex-direction:column;gap:1px;}
+  .nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--muted);font-size:13px;font-weight:500;}
+  .nav a.active{background:var(--panel-raised);color:var(--text);}
+  .nav a.active svg{color:var(--blue);opacity:1;}
+  .nav a svg{flex:none;opacity:.85;}
+  .nav a:hover:not(.active){color:var(--text);}
+  .sidebar-spacer{flex:1;}
+  .profile{display:flex;align-items:center;gap:9px;padding:14px 8px 0;border-top:1px solid var(--border);margin-top:10px;}
+  .profile .av{width:28px;height:28px;border-radius:50%;background:var(--panel-raised);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;flex:none;border:1px solid var(--border);}
+  .profile .name{font-size:12.5px;font-weight:600;}
+  .profile .role{font-size:10.5px;color:var(--faint);}
+
+  .main{padding:26px 32px 80px;max-width:760px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;margin-bottom:22px;}
+  .back-link:hover{color:var(--blue);}
+
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:0.03em;padding:3px 9px;border-radius:5px;
+    color:var(--purple);background:rgba(155,107,234,0.14);display:inline-block;margin-bottom:14px;}
+  h1{font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;margin:0 0 8px;line-height:1.3;}
+  .sub{color:var(--muted);font-size:13.5px;margin-bottom:28px;max-width:60ch;}
+
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px 26px;box-shadow:var(--shadow);margin-bottom:16px;}
+  .card-icon{width:38px;height:38px;border-radius:9px;background:var(--panel-alt);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--amber);}
+  .card h2{font-size:15px;font-weight:700;margin:0 0 10px;}
+  .card p{color:var(--muted);font-size:13px;margin:0 0 12px;max-width:58ch;}
+  .flag-box{background:var(--panel-alt);border:1px solid var(--border);border-radius:9px;padding:14px 16px;margin:14px 0;}
+  .flag-box .flag-label{font-size:10.5px;color:var(--amber);letter-spacing:0.04em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .flag-box p{margin:0;font-size:12.5px;}
+
+  .meta-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--border-soft);}
+  .meta-item .meta-label{font-size:10px;color:var(--faint);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:3px;}
+  .meta-item .meta-val{font-size:12.5px;font-weight:500;}
+
+  .next-action{display:inline-flex;align-items:center;gap:6px;background:var(--panel-alt);border:1px solid var(--border);
+    color:var(--blue);padding:9px 16px;border-radius:8px;font-size:12.5px;font-weight:600;}
+
+  @media (max-width: 720px){ .shell{grid-template-columns:1fr;} }
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <a class="logo" href="https://axiomcapitalresearch.com/" target="_blank" rel="noopener">
+      <div class="logo-word">AXIOM</div>
+      <div class="logo-sub">CAPITAL RESEARCH</div>
+    </a>
+    <nav class="nav">
+      <a href="../research-dashboard.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V7l7-4 7 4v14"/><path d="M9 21v-6h4v6"/></svg>Companies</a>
+      <a href="../research.html" class="active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>Research</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Notebook</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5h6a3 3 0 0 1 3 3v11a2.5 2.5 0 0 0-2.5-2.5H2z"/><path d="M22 5h-6a3 3 0 0 0-3 3v11a2.5 2.5 0 0 1 2.5-2.5H22z"/></svg>Reading</a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="profile">
+      <div class="av">A</div>
+      <div><div class="name">Analyst</div><div class="role">Research Desk</div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <a class="back-link" href="../research.html">← Back to Research Library</a>
+
+    <span class="badge">Under Review</span>
+    <h1>The Axiom Adaptive Multi-Factor Model</h1>
+    <div class="sub">v1.1 — Quantitative / Multi-Factor</div>
+
+    <div class="card">
+      <div class="card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      </div>
+      <h2>This memo is being held back for a data check</h2>
+      <p>A discrepancy turned up between the reported backtest statistics in v1.1 (max drawdown, total return, Sharpe ratio) and the underlying equity curve the model actually produced. Rather than publish a memo whose numbers contradict its own chart, it's being recalculated first.</p>
+
+      <div class="flag-box">
+        <div class="flag-label">What's under review</div>
+        <p>The v1.1 text reports a −16.89% max drawdown and +34.43% total return. The equity curve and drawdown chart from the same backtest instead show a peak-to-trough decline closer to −78% and a finishing value below the starting 100 base — a materially different result. The factor logic and code are being re-checked against the reported figures before this goes back out.</p>
+      </div>
+
+      <div class="meta-row">
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-val">Under review</div></div>
+        <div class="meta-item"><div class="meta-label">Flagged</div><div class="meta-val">5 Aug 2026</div></div>
+        <div class="meta-item"><div class="meta-label">Author</div><div class="meta-val">Caleb Mugarura</div></div>
+      </div>
+    </div>
+
+    <a class="next-action" href="../research.html">← Back to the library while this is reworked</a>
+  </main>
+</div>
+
+</body>
+</html>
